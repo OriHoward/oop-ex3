@@ -1,7 +1,9 @@
 from GraphInterface import GraphInterface
+from GraphNode import GraphNode
 
 
 class DiGraph(GraphInterface):
+    nodeMap: dict[int, GraphNode]
 
     def __init__(self):
         pass
