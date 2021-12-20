@@ -61,7 +61,7 @@ class DiGraph(GraphInterface):
             print(e)
             return False
 
-    def remove_node(self, node_id: int) -> bool:  # todo: finish
+    def remove_node(self, node_id: int) -> bool:  # todo: finish, add edge -> adds to src and dest dictionaries?
         curr_node = self._nodeMap.get(node_id)
         if curr_node is None:
             return False
@@ -69,9 +69,14 @@ class DiGraph(GraphInterface):
         for key in src_map.keys():
             curr_father = src_map.get(key)
             removed_edge = curr_father.remove_dest(curr_node.get_key())
+            self._MCount += 1
+            self._parsed_edges.remove(removed_edge)
         dest_map = curr_node.get_destMap()
         for key in dest_map.keys():
-            pass
+            curr_child = dest_map.get(key)
+            removed_edge = curr_child.remove_src(curr_node.get_key())
+            self._MCount += 1
+            self._parsed_edges.remove(removed_edge)
         return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
