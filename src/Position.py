@@ -1,9 +1,6 @@
 class Position:
-    x: float
-    y: float
-    z: float
 
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+    def __init__(self, x, y, z=0):
+        self._x: float = float(x)
+        self._y: float = float(y)
+        self._z: float = float(z)
