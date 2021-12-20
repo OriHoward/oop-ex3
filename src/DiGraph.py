@@ -6,15 +6,20 @@ class DiGraph(GraphInterface):
 
     def __init__(self):
         self._nodeMap: dict[int, GraphNode] = {}
+        self._MCount: int = 0
+        self._parsed_edges: list = []
+
+    def get_parsed_edges(self) -> list:
+        return self._parsed_edges
 
     def v_size(self) -> int:
-        pass
+        return len(self._nodeMap)
 
     def e_size(self) -> int:
-        pass
+        return len(self._parsed_edges)
 
     def get_mc(self) -> int:
-        pass
+        return self._MCount
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         pass

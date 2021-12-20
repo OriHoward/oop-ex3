@@ -31,3 +31,4 @@ class GraphNode:
 
     def remove_src(self, src: int):
         return self._srcMap.pop(src)
+
