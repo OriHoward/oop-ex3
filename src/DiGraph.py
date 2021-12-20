@@ -102,8 +102,10 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes connected to (into) node_id ,
         each node is represented using a pair (other_node_id, weight)
          """
+        return self.get_node(id1).get_srcMap()
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
         """
+        return self.get_node(id1).get_destMap()
