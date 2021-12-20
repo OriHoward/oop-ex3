@@ -9,7 +9,7 @@ class GraphNode:
         self._destMap = {}
         self._position = Position(*pos)
         self._id = _id
-        self._dist: float = 0
+        self._dist: float = float('inf')
 
     def get_srcMap(self):
         return self._srcMap

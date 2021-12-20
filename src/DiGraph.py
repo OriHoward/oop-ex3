@@ -6,7 +6,6 @@ class DiGraph(GraphInterface):
 
     def __init__(self):
         self._nodeMap: dict[int, GraphNode] = {}
-        pass
 
     def v_size(self) -> int:
         pass
