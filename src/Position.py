@@ -13,3 +13,8 @@ class Position:
 
     def get_z(self):
         return self._z
+
+    def get_json_format_str(self):
+        if self._x == 0 and self._y == 0 and self._z == 0:
+            return ""
+        return f"{self._x},{self._y},{self._z}"

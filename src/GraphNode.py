@@ -38,3 +38,6 @@ class GraphNode:
 
     def remove_src(self, src: int) -> GraphEdge:
         return self._srcMap.pop(src, None)
+
+    def to_json_dict(self):
+        return {"id": self.get_key(), "pos": self._position.get_json_format_str()}
