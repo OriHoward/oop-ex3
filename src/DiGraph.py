@@ -92,6 +92,13 @@ class DiGraph(GraphInterface):
         self._parsed_edges.remove(removed_edge)
         return True
 
+    def initiate_edge_maps(self):
+        for edge in self._parsed_edges:
+            src_node = self._nodeMap.get(edge.get_src())
+            dest_node = self._nodeMap.get(edge.get_dest())
+            src_node.add_dest(edge)
+            dest_node.add_src(edge)
+
     def get_all_v(self) -> dict:
         """return a dictionary of all the nodes in the Graph, each node is represented using a pair
          (node_id, node_data)

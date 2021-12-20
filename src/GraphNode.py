@@ -1,5 +1,6 @@
 from GraphEdge import GraphEdge
 from Position import Position
+from NodeTagEnum import NodeTag
 
 
 class GraphNode:
@@ -11,6 +12,7 @@ class GraphNode:
             self._position = Position(*pos)
         self._id = _id
         self._dist: float = float('inf')
+        self._tag = NodeTag.WHITE
 
     def get_srcMap(self):
         return self._srcMap
@@ -44,3 +46,9 @@ class GraphNode:
             return {"id": self.get_key()}
         else:
             return {"id": self.get_key(), "pos": self._position.get_json_format_str()}
+
+    def set_tag(self, tag: NodeTag):
+        self._tag = tag
+
+    def get_tag(self):
+        return self._tag

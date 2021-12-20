@@ -1,3 +1,5 @@
+import copy
+
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
 
@@ -19,8 +21,8 @@ def check():
     ([1,3,4,2],3.5)
     """
     check0()
-    check1()
-    check2()
+    # check1()
+    # check2()
 
 
 def check0():
@@ -38,10 +40,16 @@ def check0():
     g.add_edge(1, 3, 1.9)
     g.remove_edge(1, 3)
     g.add_edge(1, 3, 10)
+    g1 = copy.deepcopy(g)
     print(g)  # prints the __repr__ (func output)
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
+    print(g1.all_in_edges_of_node(1))
+    print(g1.all_out_edges_of_node(1))
+    print(g.get_node(0).get_key())
+    print(g1.get_node(0).get_key())
+    print(g.get_node(0) == g1.get_node(0))
     g_algo = GraphAlgo(g)
     print(g_algo.shortest_path(0, 3))
     g_algo.plot_graph()

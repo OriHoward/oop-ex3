@@ -1,3 +1,4 @@
+import copy
 import json
 from typing import List
 
@@ -5,12 +6,18 @@ from GraphJSONEncoder import GraphEncoder
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
+from NodeTagEnum import NodeTag
 import heapq
-
-from src.GraphEdge import GraphEdge
-
+from collections import deque
 
 class GraphAlgo(GraphAlgoInterface):
+
+    def __init__(self, graph=None):
+        self.prev: dict[int, List] = {}
+        if graph is None:
+            self.graph: DiGraph = DiGraph()
+        else:
+            self.graph: DiGraph = graph
 
     def load_nodes(self, nodes) -> bool:
         if nodes is None:
@@ -69,6 +76,38 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
+    def is_connected(self):
+        pass
+
+    def reset_graph_vars(self, graph: DiGraph):
+        self.prev.clear()
+        for node in graph.get_nodeMap().values():
+            node.set_tag(NodeTag.WHITE)
+
+    def is_connected_dfs(self):
+        graph_copy = copy.deepcopy(self.graph)  # deep copy of graph to prevent issues
+        if graph_copy is None:
+            return False
+        scanned_nodes = set()
+        first_node = graph_copy.get_nodeMap().get(0)
+        self.dfs_traversal(graph_copy, first_node, scanned_nodes)
+        if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
+            return False
+        scanned_nodes.clear()
+        self.reset_graph_vars()
+        graph_copy.initiate_edge_maps()
+        self.dfs_traversal(graph_copy, first_node, scanned_nodes)
+        if len(scanned_nodes) != len(graph_copy.get_parsed_edges()):
+            return False
+        return True
+
+    def dfs_traversal(self, graph_copy, curr_node, scanned_nodes):
+        stack = deque()
+        stack.append(curr_node)
+        while len(stack) > 0:
+            pass
+
+
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         """
         Finds the shortest path that visits all the nodes in the list
@@ -111,9 +150,3 @@ class GraphAlgo(GraphAlgoInterface):
                 maximum = curr_node.get_dist()
                 max_index = curr_node.get_key()
         return max_index
-
-    def __init__(self, graph=None):
-        if graph is None:
-            self.graph: DiGraph = DiGraph()
-        else:
-            self.graph: DiGraph = graph
