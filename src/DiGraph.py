@@ -56,6 +56,7 @@ class DiGraph(GraphInterface):
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         try:
             self._nodeMap[node_id] = GraphNode(node_id, pos)
+            return True
         except Exception as e:
             print(e)
             return False
