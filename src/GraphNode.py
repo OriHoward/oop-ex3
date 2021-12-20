@@ -27,8 +27,8 @@ class GraphNode:
     def add_src(self, edge: GraphEdge):
         self._srcMap[edge.get_src()] = edge
 
-    def remove_dest(self, dest: int):
-        return self._destMap.pop(dest)
+    def remove_dest(self, dest: int) -> GraphEdge:
+        return self._destMap.pop(dest, None)
 
-    def remove_src(self, src: int):
-        return self._srcMap.pop(src)
+    def remove_src(self, src: int) -> GraphEdge:
+        return self._srcMap.pop(src, None)
