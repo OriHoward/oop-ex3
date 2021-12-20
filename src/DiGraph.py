@@ -31,8 +31,18 @@ class DiGraph(GraphInterface):
             print(e)
             return False
 
-    def remove_node(self, node_id: int) -> bool:
-        pass
+    def remove_node(self, node_id: int) -> bool:  # todo: finish
+        curr_node = self._nodeMap.get(node_id)
+        if curr_node is None:
+            return False
+        src_map = curr_node.get_srcMap()
+        for key in src_map.keys():
+            curr_father = src_map.get(key)
+            removed_edge = curr_father.remove_dest(curr_node.get_key())
+        dest_map = curr_node.get_destMap()
+        for key in dest_map.keys():
+            pass
+        return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         pass

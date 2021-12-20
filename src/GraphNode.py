@@ -4,10 +4,11 @@ from Position import Position
 
 class GraphNode:
 
-    def __init__(self, _id: int, pos: tuple):
+    def __init__(self, _id: int, pos: tuple = None):
         self._srcMap = {}
         self._destMap = {}
-        self._position = Position(*pos)
+        if pos is not None:
+            self._position = Position(*pos)
         self._id = _id
         self._dist: float = float('inf')
 
@@ -31,4 +32,3 @@ class GraphNode:
 
     def remove_src(self, src: int):
         return self._srcMap.pop(src)
-
