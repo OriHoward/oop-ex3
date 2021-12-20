@@ -3,9 +3,9 @@ from GraphNode import GraphNode
 
 
 class DiGraph(GraphInterface):
-    nodeMap: dict[int, GraphNode]
 
     def __init__(self):
+        self._nodeMap: dict[int, GraphNode] = {}
         pass
 
     def v_size(self) -> int:
@@ -21,7 +21,11 @@ class DiGraph(GraphInterface):
         pass
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
-        pass
+        try:
+            self._nodeMap[node_id] = GraphNode(node_id, pos)
+        except Exception as e:
+            print(e)
+            return False
 
     def remove_node(self, node_id: int) -> bool:
         pass
@@ -33,6 +37,7 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes in the Graph, each node is represented using a pair
          (node_id, node_data)
         """
+        return self._nodeMap
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected to (into) node_id ,

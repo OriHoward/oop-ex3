@@ -1,5 +1,5 @@
+import json
 from typing import List
-from types import SimpleNamespace
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
@@ -8,7 +8,14 @@ from GraphInterface import GraphInterface
 class GraphAlgo(GraphAlgoInterface):
 
     def load_from_json(self, file_name: str) -> bool:
+        json_dict = {}
         self.graph = DiGraph()
+        with open(file_name, 'r') as f:
+            json_dict = json.load(f)
+        for node in json_dict["Nodes"]:
+            node_id = node.get("id")
+            pos: tuple = tuple(node.get("pos", "").split(',')[:-1])
+            self.graph.add_node(node_id, pos)
 
     def save_to_json(self, file_name: str) -> bool:
         pass
