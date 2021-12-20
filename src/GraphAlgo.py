@@ -86,16 +86,17 @@ class GraphAlgo(GraphAlgoInterface):
     #     pass
 
     def centerPoint(self) -> (int, float):
-        curr_minMax = 'inf'
-        chosen_node = 0
-        for curr_node_id in self.graph.get_nodeMap().keys():
-            self.dijkstra_minimize(curr_node_id)
-            minMax_index = self.find_max()
-            node = self.graph.get_node(minMax_index)
-            if node.get_dist() < curr_minMax:
-                curr_minMax = node.get_dist()
-                chosen_node = curr_node_id
-        return chosen_node
+        pass
+        # curr_minMax = 'inf'
+        # chosen_node = 0
+        # for curr_node_id in self.graph.get_nodeMap().keys():
+        #     self.dijkstra_minimize(curr_node_id)
+        #     minMax_index = self.find_max()
+        #     node = self.graph.get_node(minMax_index)
+        #     if node.get_dist() < curr_minMax:
+        #         curr_minMax = node.get_dist()
+        #         chosen_node = curr_node_id
+        # return chosen_node
 
     def find_max(self) -> int:
         maximum = 'inf'
