@@ -1,5 +1,7 @@
 import json
 from typing import List
+
+from GraphJSONEncoder import GraphEncoder
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
@@ -42,7 +44,13 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-        pass
+        to_json = {}
+        node_list = list(self.graph.get_all_v().values())
+        edge_list = self.graph.get_parsed_edges()
+        to_json["Nodes"] = node_list
+        to_json["Edges"] = edge_list
+        with open('result.json', 'w') as fp:
+            json.dump(to_json, fp, cls=GraphEncoder)
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         return 0, 0
