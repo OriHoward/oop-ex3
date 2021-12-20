@@ -18,6 +18,12 @@ class GraphNode:
     def get_destMap(self):
         return self._destMap
 
+    def get_dist(self):
+        return self._dist
+
+    def set_dist(self, dist):
+        self._dist = dist
+
     def get_key(self):
         return self._id
 

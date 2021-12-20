@@ -3,6 +3,9 @@ from typing import List
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
+import heapq
+
+from src.GraphEdge import GraphEdge
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -60,11 +63,40 @@ class GraphAlgo(GraphAlgoInterface):
         :return: A list of the nodes id's in the path, and the overall distance
         """
 
+    def dijkstra_minimize(self, src: int):
+        curr_node = self.graph.get_node(src)
+        curr_node.set_dist(0.0)
+        to_scan = []
+        for node in self.graph.get_nodeMap().values():
+            if node.get_key() != src:
+                node.set_dist('inf')
+            heapq.heappush(to_scan, node)
+        while len(to_scan) > 0:
+            node = heapq.heappop(to_scan)
+            for curr_edge in self.graph.get_parsed_edges():
+                pass
+        pass
+
     def centerPoint(self) -> (int, float):
-        """
-        Finds the node that has the shortest distance to it's farthest node.
-        :return: The nodes id, min-maximum distance
-        """
+        curr_minMax = 'inf'
+        chosen_node = 0
+        for curr_node_id in self.graph.get_nodeMap().keys():
+            self.dijkstra_minimize(curr_node_id)
+            minMax_index = self.find_max()
+            node = self.graph.get_node(minMax_index)
+            if node.get_dist() < curr_minMax:
+                curr_minMax = node.get_dist()
+                chosen_node = curr_node_id
+        return chosen_node
+
+    def find_max(self) -> int:
+        maximum = 'inf'
+        max_index = 0
+        for curr_node in self.graph.get_nodeMap().values():
+            if curr_node.get_dist() > maximum:
+                maximum = curr_node.get_dist()
+                max_index = curr_node.get_key()
+        return max_index
 
     def __init__(self, graph=None):
         self.graph: DiGraph = graph
