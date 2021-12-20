@@ -47,13 +47,18 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-        to_json = {}
-        node_list = list(self.graph.get_all_v().values())
-        edge_list = self.graph.get_parsed_edges()
-        to_json["Nodes"] = node_list
-        to_json["Edges"] = edge_list
-        with open('result.json', 'w') as fp:
-            json.dump(to_json, fp, cls=GraphEncoder)
+        try:
+            to_json = {}
+            node_list = list(self.graph.get_all_v().values())
+            edge_list = self.graph.get_parsed_edges()
+            to_json["Nodes"] = node_list
+            to_json["Edges"] = edge_list
+            with open(file_name, 'w') as fp:
+                json.dump(to_json, fp, cls=GraphEncoder)
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         return 0, 0
@@ -108,4 +113,7 @@ class GraphAlgo(GraphAlgoInterface):
         return max_index
 
     def __init__(self, graph=None):
-        self.graph: DiGraph = graph
+        if graph is None:
+            self.graph: DiGraph = DiGraph()
+        else:
+            self.graph: DiGraph = graph
