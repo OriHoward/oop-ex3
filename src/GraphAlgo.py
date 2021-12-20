@@ -71,19 +71,19 @@ class GraphAlgo(GraphAlgoInterface):
         :return: A list of the nodes id's in the path, and the overall distance
         """
 
-    def dijkstra_minimize(self, src: int):
-        curr_node = self.graph.get_node(src)
-        curr_node.set_dist(0.0)
-        to_scan = []
-        for node in self.graph.get_nodeMap().values():
-            if node.get_key() != src:
-                node.set_dist('inf')
-            heapq.heappush(to_scan, node)
-        while len(to_scan) > 0:
-            node = heapq.heappop(to_scan)
-            for curr_edge in self.graph.get_parsed_edges():
-                pass
-        pass
+    # def dijkstra_minimize(self, src: int):
+    #     curr_node = self.graph.get_node(src)
+    #     curr_node.set_dist(0.0)
+    #     to_scan = []
+    #     for node in self.graph.get_nodeMap().values():
+    #         if node.get_key() != src:
+    #             node.set_dist('inf')
+    #         heapq.heappush(to_scan, node)
+    #     while len(to_scan) > 0:
+    #         node = heapq.heappop(to_scan)
+    #         for curr_edge in self.graph.get_parsed_edges():
+    #             pass
+    #     pass
 
     def centerPoint(self) -> (int, float):
         curr_minMax = 'inf'
