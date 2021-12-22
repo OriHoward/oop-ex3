@@ -33,7 +33,9 @@ class TestGraphAlgo(TestCase):
         os.unlink(self.test_json)
 
     def test_shortest_path(self):
-        self.assertTrue(True)
+        self.g_algo.load_from_json("../../data/shortestPathTest.json")
+        trail = [1, 2, 4, 5]
+        self.assertEqual(trail, self.g_algo.shortest_path(1, 5)[1])
 
     def test_plot_graph(self):
         self.assertTrue(True)
