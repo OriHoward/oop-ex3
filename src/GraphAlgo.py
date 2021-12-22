@@ -133,40 +133,44 @@ class GraphAlgo(GraphAlgoInterface):
             curr_node.set_srcMap(dict())  # src and dest map are initialized in is_connected_dfs function (above)
             curr_node.set_destMap(dict())
 
-    def TSP(self, node_lst: List[int]) -> (List[int], float):  # todo: return overall distance
+    def TSP(self, node_lst: List[int]) -> (List[int], float):
         if node_lst is None or len(node_lst) == 0:
             return None, -1
         if len(node_lst) == 1:
             return node_lst, 0
-        cities = list(set(node_lst))  # remove duplicates
-        best_path = self.get_optimal_path_to_cities(cities)
+        cities = set(node_lst)  # remove duplicates
+        best_path, dist = self.get_optimal_path_to_cities(cities)
         self.remove_visited_cities(cities, best_path)
+        path = list(best_path)
         while len(cities) > 0:
-            path_from_last = self.get_optimal_path_from_last(best_path[-1], cities)
-            if path_from_last is None:
+            curr_dist, curr_path = self.get_optimal_path_from_last(best_path[-1], cities)
+            if curr_path is None:
                 break
             else:
-                best_path.append(path_from_last)
-            self.remove_visited_cities(cities, best_path)
-        return best_path
+                path.append(curr_path)
+                dist += curr_dist
+            self.remove_visited_cities(cities, curr_path)
+        return best_path, dist
 
     @staticmethod
-    def remove_visited_cities(cities: List[int], best_path: List[int]):
-        for key in best_path:
-            cities.remove(key)
+    def remove_visited_cities(cities: set[int], curr_path: tuple[int]):
+        for key in curr_path:
+            if key in cities:
+                cities.remove(key)
 
     # previous name: getOptimalPathFromList
-    def get_optimal_path_to_cities(self, cities: List[int]):
-        path_map: dict[List[int], float] = dict()
+    def get_optimal_path_to_cities(self, cities: set[int]):
+        path_map: dict[tuple[int], float] = dict()
         for key1 in cities:
             for key2 in cities:
                 if key1 != key2:
                     dist, shortest_path = self.shortest_path(key1, key2)
-                    path_map[shortest_path] = dist
+                    if len(shortest_path) > 0 and shortest_path is not None:
+                        path_map[tuple(shortest_path)] = dist
         return self.get_optimal_path_from_map(cities, path_map)
 
     @staticmethod
-    def get_optimal_path_from_map(cities: List[int], path_map: dict[List[int], float]):
+    def get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float):
         max_size = 0
         best_path = None
         for path in path_map.keys():
@@ -180,19 +184,20 @@ class GraphAlgo(GraphAlgoInterface):
             elif (len(curr_participants) == max_size) and (best_path is not None) and \
                     (path_map.get(path) < path_map.get(best_path)):
                 best_path = path
-        return path_map.get(best_path)
+        return best_path, path_map.get(best_path)
 
-    def get_optimal_path_from_last(self, src_key: int, cities: List[int]):
-        path_map: dict[List[int], float] = dict()
+    def get_optimal_path_from_last(self, src_key: int, cities: set[int]) -> (tuple[int], float):
+        path_map: dict[tuple[int], float] = dict()
         for dest_key in cities:
-            dest, curr_shortest_path = self.shortest_path(src_key, dest_key)
-            path_map[curr_shortest_path] = dest
-        dest, optimal_path = self.get_optimal_path_to_cities(cities, path_map)
+            curr_dist, curr_shortest_path = self.shortest_path(src_key, dest_key)
+            path_map[tuple(curr_shortest_path)] = curr_dist
+        optimal_path, dist = self.get_optimal_path_from_map(cities, path_map)
         if optimal_path is None:
             return None
         else:
-            optimal_path.remove(0)  # todo: removes first node in List (not the python list)
-            return dest, optimal_path
+            path = list(optimal_path)
+            path.remove(0)
+            return tuple(path), dist
 
     def dijkstra(self, src: int) -> dict[int, list[int]]:
         prev: dict[int, list[int]] = {}
