@@ -166,21 +166,21 @@ class GraphAlgo(GraphAlgoInterface):
         to_scan = []
         for node in self.graph.get_nodeMap().values():
             if node.get_key() != src:
-                node.set_dist('inf')
-            heapq.heappush(to_scan, (node.get_dist(), node))
+                node.set_dist(float('inf'))
+            heapq.heappush(to_scan, node)
         while len(to_scan) > 0:
-            _, node = heapq.heappop(to_scan)
+            node = heapq.heappop(to_scan)
             for curr_edge in self.graph.get_parsed_edges():
                 neighbor = self.graph.get_node(curr_edge.get_dest())
-                alt = node.get_dist + curr_edge.get_weight()
+                alt = node.get_dist() + curr_edge.get_weight()
                 if alt < neighbor.get_dist():
                     neighbor.set_dist(alt)
-                    heapq.heappush(to_scan, (neighbor.get_dist(), neighbor))
+                    heapq.heappush(to_scan, neighbor)
 
     def centerPoint(self) -> (int, float):
         if not self.is_connected:
             return None
-        curr_minMax = 'inf'
+        curr_minMax = float('inf')
         chosen_node = 0
         for curr_node_id in self.graph.get_nodeMap().keys():
             self.dijkstra_minimize(curr_node_id)
@@ -192,7 +192,7 @@ class GraphAlgo(GraphAlgoInterface):
         return chosen_node
 
     def find_max(self) -> int:
-        maximum = 'inf'
+        maximum = float('inf')
         max_index = 0
         for curr_node in self.graph.get_nodeMap().values():
             if curr_node.get_dist() > maximum:
