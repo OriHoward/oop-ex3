@@ -148,14 +148,14 @@ class GraphAlgo(GraphAlgoInterface):
             heapq.heappush(to_scan, node)
 
         while len(to_scan) > 0:
-            node = heapq.heappop(to_scan)
-            for curr_edge in self.graph.get_parsed_edges():
+            node: GraphNode = heapq.heappop(to_scan)
+            for curr_edge in node.get_destMap().values():
                 neighbor = self.graph.get_node(curr_edge.get_dest())
                 alt = node.get_dist() + curr_edge.get_weight()
                 if alt < neighbor.get_dist():
                     neighbor.set_dist(alt)
-                    if prev.get(node.get_key, None) is not None:
-                        prev[neighbor.get_key()] = copy.deepcopy(prev.get(node.get_key))
+                    if prev.get(node.get_key(), None) is not None:
+                        prev[neighbor.get_key()] = copy.deepcopy(prev.get(node.get_key()))
                     prev.get(neighbor.get_key(), []).append(node.get_key())
                     heapq.heappush(to_scan, neighbor)
         return prev
@@ -169,8 +169,8 @@ class GraphAlgo(GraphAlgoInterface):
                 node.set_dist(float('inf'))
             heapq.heappush(to_scan, node)
         while len(to_scan) > 0:
-            node = heapq.heappop(to_scan)
-            for curr_edge in self.graph.get_parsed_edges():
+            node: GraphNode = heapq.heappop(to_scan)
+            for curr_edge in node.get_destMap().values():
                 neighbor = self.graph.get_node(curr_edge.get_dest())
                 alt = node.get_dist() + curr_edge.get_weight()
                 if alt < neighbor.get_dist():
