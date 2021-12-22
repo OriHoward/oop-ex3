@@ -143,14 +143,14 @@ class GraphAlgo(GraphAlgoInterface):
         self.remove_visited_cities(cities, best_path)
         path = list(best_path)
         while len(cities) > 0:
-            curr_dist, curr_path = self.get_optimal_path_from_last(best_path[-1], cities)
+            curr_path, curr_dist = self.get_optimal_path_from_last(best_path[-1], cities)
             if curr_path is None:
                 break
             else:
-                path.append(curr_path)
+                path.extend(list(curr_path))
                 dist += curr_dist
             self.remove_visited_cities(cities, curr_path)
-        return best_path, dist
+        return path, dist
 
     @staticmethod
     def remove_visited_cities(cities: set[int], curr_path: tuple[int]):
@@ -196,8 +196,7 @@ class GraphAlgo(GraphAlgoInterface):
             return None
         else:
             path = list(optimal_path)
-            path.remove(0)
-            return tuple(path), dist
+            return tuple(path[1:]), dist
 
     def dijkstra(self, src: int) -> dict[int, list[int]]:
         prev: dict[int, list[int]] = {}
