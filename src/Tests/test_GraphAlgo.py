@@ -44,7 +44,12 @@ class TestGraphAlgo(TestCase):
         self.assertTrue(True)
 
     def test_tsp(self):
-        self.assertTrue(True)
+        self.g_algo.load_from_json("../../data/A1.json")
+        cities = [5, 2, 9]
+        actual_path = [2, 6, 5, 6, 7, 8, 9]
+        path_dist, shortest_path = self.g_algo.TSP(cities)
+
+        self.assertEqual(actual_path, shortest_path)
 
     def test_center_point(self):
         self.g_algo.load_from_json("../../data/centerTest.json")
