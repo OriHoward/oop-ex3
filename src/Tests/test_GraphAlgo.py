@@ -1,9 +1,10 @@
 from unittest import TestCase
 
-from GraphEdge import GraphEdge
+from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
 from GraphInterface import GraphInterface
 import os
+from typing import cast
 
 
 class TestGraphAlgo(TestCase):
@@ -50,7 +51,25 @@ class TestGraphAlgo(TestCase):
         self.assertTrue(True)
 
     def test_is_connected(self):
-        # self.g_algo.load_from_json("../../data/notConnected.json")
-        # self.assertFalse(self.g_algo.is_connected())
+        self.g_algo.load_from_json("../../data/notConnected.json")
+        self.assertFalse(self.g_algo.is_connected())
         self.g_algo.load_from_json("../../data/isConnected.json")
         self.assertTrue(self.g_algo.is_connected())
+
+    @staticmethod
+    def get_dist_of_node(graph: DiGraph):
+        return lambda node_id: graph.get_node(node_id).get_dist()
+
+    def test_dijkstra(self):
+        self.g_algo.load_from_json("../../data/dijkstraTest.json")
+        self.g_algo.dijkstra(1)
+        graph = cast(DiGraph, self.g_algo.get_graph())
+
+        get_dist_of_node = self.get_dist_of_node(graph)
+
+        self.assertAlmostEqual(1.9, get_dist_of_node(0), 4)
+        self.assertAlmostEqual(0.0, get_dist_of_node(1), 4)
+        self.assertAlmostEqual(0.4, get_dist_of_node(2), 4)
+        self.assertAlmostEqual(1.2, get_dist_of_node(3), 4)
+        self.assertAlmostEqual(float('inf'), get_dist_of_node(4), 4)
+        self.assertAlmostEqual(2.4, get_dist_of_node(5), 4)
