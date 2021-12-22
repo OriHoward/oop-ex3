@@ -45,7 +45,8 @@ class TestGraphAlgo(TestCase):
         self.assertTrue(True)
 
     def test_center_point(self):
-        self.assertTrue(True)
+        self.g_algo.load_from_json("../../data/centerTest.json")
+        self.assertEqual(2, self.g_algo.centerPoint())
 
     def test_find_max(self):
         self.assertTrue(True)

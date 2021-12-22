@@ -249,7 +249,7 @@ class GraphAlgo(GraphAlgoInterface):
         return chosen_node
 
     def find_max(self) -> int:
-        maximum = float('inf')
+        maximum = float('-inf')
         max_index = 0
         for curr_node in self.graph.get_nodeMap().values():
             if curr_node.get_dist() > maximum:
