@@ -5,8 +5,9 @@ from typing import List
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphGui import GraphGui
-from GraphInterface import GraphInterface
+from GraphEdge import GraphEdge
 from GraphNode import GraphNode
+from GraphInterface import GraphInterface
 from NodeTagEnum import NodeTag
 import heapq
 from collections import deque
@@ -108,7 +109,7 @@ class GraphAlgo(GraphAlgoInterface):
         self.reset_graph_vars(graph_copy)
         graph_copy.initiate_edge_maps()
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
-        if len(scanned_nodes) != len(graph_copy.get_parsed_edges()):
+        if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
             return False
         return True
 
@@ -120,24 +121,78 @@ class GraphAlgo(GraphAlgoInterface):
             curr_node = stack.pop()
             if curr_node is None:
                 continue
-            scanned_nodes.add(curr_node.get_key)
-            if curr_node.get_tag == NodeTag.WHITE:
+            scanned_nodes.add(curr_node.get_key())
+            if curr_node.get_tag() == NodeTag.WHITE:
                 curr_node.set_tag(NodeTag.GRAY)
-                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key):
-                    stack.append(graph_copy.get_node(neighbor_edge.get_dest))
-                    tmp = neighbor_edge.get_dest  # transpose edges of the graph (for next second dfs)
-                    neighbor_edge.set_dest(neighbor_edge.get_src)
+                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()).values():
+                    stack.append(graph_copy.get_node(neighbor_edge.get_dest()))
+                    tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for next second dfs)
+                    neighbor_edge.set_dest(neighbor_edge.get_src())
                     neighbor_edge.set_src(tmp)
             curr_node.set_tag(NodeTag.BLACK)
             curr_node.set_srcMap(dict())  # src and dest map are initialized in is_connected_dfs function (above)
             curr_node.set_destMap(dict())
 
-    def TSP(self, node_lst: List[int]) -> (List[int], float):
-        """
-        Finds the shortest path that visits all the nodes in the list
-        :param node_lst: A list of nodes id's
-        :return: A list of the nodes id's in the path, and the overall distance
-        """
+    def TSP(self, node_lst: List[int]) -> (List[int], float):  # todo: return overall distance
+        if node_lst is None or len(node_lst) == 0:
+            return None, -1
+        if len(node_lst) == 1:
+            return node_lst, 0
+        cities = list(set(node_lst))  # remove duplicates
+        best_path = self.get_optimal_path_to_cities(cities)
+        self.remove_visited_cities(cities, best_path)
+        while len(cities) > 0:
+            path_from_last = self.get_optimal_path_from_last(best_path[-1], cities)
+            if path_from_last is None:
+                break
+            else:
+                best_path.append(path_from_last)
+            self.remove_visited_cities(cities, best_path)
+        return best_path
+
+    @staticmethod
+    def remove_visited_cities(cities: List[int], best_path: List[int]):
+        for key in best_path:
+            cities.remove(key)
+
+    # previous name: getOptimalPathFromList
+    def get_optimal_path_to_cities(self, cities: List[int]):
+        path_map: dict[List[int], float] = dict()
+        for key1 in cities:
+            for key2 in cities:
+                if key1 != key2:
+                    dist, shortest_path = self.shortest_path(key1, key2)
+                    path_map[shortest_path] = dist
+        return self.get_optimal_path_from_map(cities, path_map)
+
+    @staticmethod
+    def get_optimal_path_from_map(cities: List[int], path_map: dict[List[int], float]):
+        max_size = 0
+        best_path = None
+        for path in path_map.keys():
+            curr_participants: set[int] = set()
+            for city in cities:
+                if city in path:
+                    curr_participants.add(city)
+            if len(curr_participants) > max_size:
+                best_path = path
+                max_size = len(curr_participants)
+            elif (len(curr_participants) == max_size) and (best_path is not None) and \
+                    (path_map.get(path) < path_map.get(best_path)):
+                best_path = path
+        return path_map.get(best_path)
+
+    def get_optimal_path_from_last(self, src_key: int, cities: List[int]):
+        path_map: dict[List[int], float] = dict()
+        for dest_key in cities:
+            dest, curr_shortest_path = self.shortest_path(src_key, dest_key)
+            path_map[curr_shortest_path] = dest
+        dest, optimal_path = self.get_optimal_path_to_cities(cities, path_map)
+        if optimal_path is None:
+            return None
+        else:
+            optimal_path.remove(0)  # todo: removes first node in List (not the python list)
+            return dest, optimal_path
 
     def dijkstra(self, src: int) -> dict[int, list[int]]:
         prev: dict[int, list[int]] = {}
