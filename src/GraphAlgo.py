@@ -13,7 +13,6 @@ from collections import deque
 from GraphJSONEncoder import GraphEncoder
 
 
-
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=None):
@@ -151,6 +150,8 @@ class GraphAlgo(GraphAlgoInterface):
                     heapq.heappush(to_scan, (neighbor.get_dist(), neighbor))
 
     def centerPoint(self) -> (int, float):
+        if not self.is_connected:
+            return None
         curr_minMax = 'inf'
         chosen_node = 0
         for curr_node_id in self.graph.get_nodeMap().keys():
