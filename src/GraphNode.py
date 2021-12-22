@@ -20,6 +20,12 @@ class GraphNode:
     def get_destMap(self):
         return self._destMap
 
+    def set_srcMap(self, src_map: dict):
+        self._srcMap = src_map
+
+    def set_destMap(self, dest_map: dict):
+        self._destMap = dest_map
+
     def get_dist(self):
         return self._dist
 

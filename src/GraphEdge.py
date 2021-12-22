@@ -14,6 +14,12 @@ class GraphEdge:
     def get_weight(self):
         return self._weight
 
+    def set_dest(self, dest: int):
+        self._dest = dest
+
+    def set_src(self, src: int):
+        self._src = src
+
     def to_json_dict(self):
         return {
             "src": self._src,

@@ -10,6 +10,7 @@ from NodeTagEnum import NodeTag
 import heapq
 from collections import deque
 
+
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=None):
@@ -76,13 +77,14 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
-    def is_connected(self):
-        pass
-
-    def reset_graph_vars(self, graph: DiGraph):
-        self.prev.clear()
+    @staticmethod
+    def reset_graph_vars(graph: DiGraph):
+        graph.prev.clear()
         for node in graph.get_nodeMap().values():
             node.set_tag(NodeTag.WHITE)
+
+    def is_connected(self):
+        return self.is_connected_dfs()
 
     def is_connected_dfs(self):
         graph_copy = copy.deepcopy(self.graph)  # deep copy of graph to prevent issues
@@ -93,20 +95,34 @@ class GraphAlgo(GraphAlgoInterface):
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
         if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
             return False
+        # init for second dfs on reversed edges graph
         scanned_nodes.clear()
-        self.reset_graph_vars()
+        self.reset_graph_vars(graph_copy)
         graph_copy.initiate_edge_maps()
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
         if len(scanned_nodes) != len(graph_copy.get_parsed_edges()):
             return False
         return True
 
-    def dfs_traversal(self, graph_copy, curr_node, scanned_nodes):
+    @staticmethod
+    def dfs_traversal(graph_copy, curr_node, scanned_nodes):
         stack = deque()
         stack.append(curr_node)
         while len(stack) > 0:
-            pass
-
+            curr_node = stack.pop()
+            if curr_node is None:
+                continue
+            scanned_nodes.add(curr_node.get_key)
+            if curr_node.get_tag == NodeTag.WHITE:
+                curr_node.set_tag(NodeTag.GRAY)
+                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key):
+                    stack.append(graph_copy.get_node(neighbor_edge.get_dest))
+                    tmp = neighbor_edge.get_dest  # transpose edges of the graph (for next second dfs)
+                    neighbor_edge.set_dest(neighbor_edge.get_src)
+                    neighbor_edge.set_src(tmp)
+            curr_node.set_tag(NodeTag.BLACK)
+            curr_node.set_srcMap(dict())  # src and dest map are initialized in is_connected_dfs function (above)
+            curr_node.set_destMap(dict())
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         """
