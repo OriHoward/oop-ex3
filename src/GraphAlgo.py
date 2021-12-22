@@ -4,6 +4,7 @@ from typing import List
 
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
+from GraphGui import GraphGui
 from GraphInterface import GraphInterface
 from GraphNode import GraphNode
 from NodeTagEnum import NodeTag
@@ -80,7 +81,7 @@ class GraphAlgo(GraphAlgoInterface):
         return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
-        pass
+        GraphGui(self.graph)
 
     def get_graph(self) -> GraphInterface:
         return self.graph
@@ -194,7 +195,7 @@ class GraphAlgo(GraphAlgoInterface):
         return chosen_node
 
     def find_max(self) -> int:
-        maximum = float('inf')
+        maximum = float('-inf')
         max_index = 0
         for curr_node in self.graph.get_nodeMap().values():
             if curr_node.get_dist() > maximum:

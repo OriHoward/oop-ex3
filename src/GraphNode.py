@@ -10,6 +10,8 @@ class GraphNode:
         self._destMap = {}
         if pos is not None:
             self._position = Position(*pos)
+        else:
+            self._position = Position(0, 0, 0)
         self._id = _id
         self._dist: float = float('inf')
         self._tag = NodeTag.WHITE
@@ -55,6 +57,11 @@ class GraphNode:
             return {"id": self.get_key()}
         else:
             return {"id": self.get_key(), "pos": self._position.get_json_format_str()}
+
+    def get_pos(self) -> Position:
+        return self._position
+
+    # todo: generate postion if there is no pos
 
     def set_tag(self, tag: NodeTag):
         self._tag = tag
