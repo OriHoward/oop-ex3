@@ -48,3 +48,9 @@ class TestGraphAlgo(TestCase):
 
     def test_find_max(self):
         self.assertTrue(True)
+
+    def test_is_connected(self):
+        # self.g_algo.load_from_json("../../data/notConnected.json")
+        # self.assertFalse(self.g_algo.is_connected())
+        self.g_algo.load_from_json("../../data/isConnected.json")
+        self.assertTrue(self.g_algo.is_connected())

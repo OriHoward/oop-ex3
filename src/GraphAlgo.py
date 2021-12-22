@@ -108,7 +108,7 @@ class GraphAlgo(GraphAlgoInterface):
         self.reset_graph_vars(graph_copy)
         graph_copy.initiate_edge_maps()
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
-        if len(scanned_nodes) != len(graph_copy.get_parsed_edges()):
+        if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
             return False
         return True
 
@@ -123,7 +123,7 @@ class GraphAlgo(GraphAlgoInterface):
             scanned_nodes.add(curr_node.get_key())
             if curr_node.get_tag() == NodeTag.WHITE:
                 curr_node.set_tag(NodeTag.GRAY)
-                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()):
+                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()).values():
                     stack.append(graph_copy.get_node(neighbor_edge.get_dest()))
                     tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for next second dfs)
                     neighbor_edge.set_dest(neighbor_edge.get_src())
