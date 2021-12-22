@@ -71,10 +71,12 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2 or self.graph.get_nodeMap().get(id1) is None or self.graph.get_nodeMap().get(id2) is None:
-            return 'inf', None
+            return 'inf', []
         prev = self.dijkstra(id1)
         prev.get(id2).append(id2)
         dest_node = self.graph.get_node(id2)
+        if dest_node.get_dist() == float('inf'):
+            return float('inf'), []
         return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
