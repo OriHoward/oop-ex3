@@ -77,9 +77,8 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
-    @staticmethod
-    def reset_graph_vars(graph: DiGraph):
-        graph.prev.clear()
+    def reset_graph_vars(self, graph: DiGraph):
+        self.prev.clear()
         for node in graph.get_nodeMap().values():
             node.set_tag(NodeTag.WHITE)
 
