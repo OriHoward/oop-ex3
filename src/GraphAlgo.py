@@ -2,13 +2,16 @@ import copy
 import json
 from typing import List
 
-from GraphJSONEncoder import GraphEncoder
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
+from GraphEdge import GraphEdge
 from GraphInterface import GraphInterface
 from NodeTagEnum import NodeTag
 import heapq
 from collections import deque
+
+from GraphJSONEncoder import GraphEncoder
+
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -130,32 +133,34 @@ class GraphAlgo(GraphAlgoInterface):
         :return: A list of the nodes id's in the path, and the overall distance
         """
 
-    # def dijkstra_minimize(self, src: int):
-    #     curr_node = self.graph.get_node(src)
-    #     curr_node.set_dist(0.0)
-    #     to_scan = []
-    #     for node in self.graph.get_nodeMap().values():
-    #         if node.get_key() != src:
-    #             node.set_dist('inf')
-    #         heapq.heappush(to_scan, node)
-    #     while len(to_scan) > 0:
-    #         node = heapq.heappop(to_scan)
-    #         for curr_edge in self.graph.get_parsed_edges():
-    #             pass
-    #     pass
+    def dijkstra_minimize(self, src: int):
+        curr_node = self.graph.get_node(src)
+        curr_node.set_dist(0.0)
+        to_scan = []
+        for node in self.graph.get_nodeMap().values():
+            if node.get_key() != src:
+                node.set_dist('inf')
+            heapq.heappush(to_scan, (node.get_dist(), node))
+        while len(to_scan) > 0:
+            _, node = heapq.heappop(to_scan)
+            for curr_edge in self.graph.get_parsed_edges():
+                neighbor = self.graph.get_node(curr_edge.get_dest())
+                alt = node.get_dist + curr_edge.get_weight()
+                if alt < neighbor.get_dist():
+                    neighbor.set_dist(alt)
+                    heapq.heappush(to_scan, (neighbor.get_dist(), neighbor))
 
     def centerPoint(self) -> (int, float):
-        pass
-        # curr_minMax = 'inf'
-        # chosen_node = 0
-        # for curr_node_id in self.graph.get_nodeMap().keys():
-        #     self.dijkstra_minimize(curr_node_id)
-        #     minMax_index = self.find_max()
-        #     node = self.graph.get_node(minMax_index)
-        #     if node.get_dist() < curr_minMax:
-        #         curr_minMax = node.get_dist()
-        #         chosen_node = curr_node_id
-        # return chosen_node
+        curr_minMax = 'inf'
+        chosen_node = 0
+        for curr_node_id in self.graph.get_nodeMap().keys():
+            self.dijkstra_minimize(curr_node_id)
+            minMax_index = self.find_max()
+            node = self.graph.get_node(minMax_index)
+            if node.get_dist() < curr_minMax:
+                curr_minMax = node.get_dist()
+                chosen_node = curr_node_id
+        return chosen_node
 
     def find_max(self) -> int:
         maximum = 'inf'

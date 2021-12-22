@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from DiGraph import DiGraph
+from GraphEdge import GraphEdge
 from GraphAlgo import GraphAlgo
 from GraphInterface import GraphInterface
 import os

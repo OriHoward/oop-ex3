@@ -1,6 +1,6 @@
 from GraphInterface import GraphInterface
 from GraphNode import GraphNode
-from src.GraphEdge import GraphEdge
+from GraphEdge import GraphEdge
 
 
 class DiGraph(GraphInterface):
@@ -10,7 +10,7 @@ class DiGraph(GraphInterface):
         self._MCount: int = 0
         self._parsed_edges: list[GraphEdge] = []
 
-    def get_parsed_edges(self) -> list:
+    def get_parsed_edges(self) -> list[GraphEdge]:
         return self._parsed_edges
 
     def get_nodeMap(self):
