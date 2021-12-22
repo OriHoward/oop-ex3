@@ -6,6 +6,7 @@ from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphEdge import GraphEdge
 from GraphInterface import GraphInterface
+from GraphNode import GraphNode
 from NodeTagEnum import NodeTag
 import heapq
 from collections import deque
@@ -131,6 +132,30 @@ class GraphAlgo(GraphAlgoInterface):
         :param node_lst: A list of nodes id's
         :return: A list of the nodes id's in the path, and the overall distance
         """
+
+    def dijkstra(self, src: int) -> dict[int, list[GraphNode]]:
+        prev: dict[int, list[GraphNode]] = {}
+        curr_node = self.graph.get_node(src)
+        curr_node.set_dist(0.0)
+        to_scan = []
+        for node in self.graph.get_nodeMap().values():
+            if node.get_key() != src:
+                node.set_dist('inf')
+                prev[node.get_key()] = []
+            heapq.heappush(to_scan, (node.get_dist(), node))
+
+        while len(to_scan) > 0:
+            _, node = heapq.heappop(to_scan)
+            for curr_edge in self.graph.get_parsed_edges():
+                neighbor = self.graph.get_node(curr_edge.get_dest())
+                alt = node.get_dist + curr_edge.get_weight()
+                if alt < neighbor.get_dist():
+                    neighbor.set_dist(alt)
+                    if prev.get(node.get_key, None) is not None:
+                        prev[neighbor.get_key()] = copy.deepcopy(prev.get(node.get_key))
+                    prev.get(neighbor.get_key(),[]).append(node.get_key())
+                    heapq.heappush(to_scan, (neighbor.get_dist(), neighbor))
+        return prev
 
     def dijkstra_minimize(self, src: int):
         curr_node = self.graph.get_node(src)
