@@ -24,3 +24,5 @@ class TestGraphNode(TestCase):
     def test_get_key(self):
         self.assertEqual(self.graph.get_node(0).get_key(), 0)
 
+    def test_set_dist(self):
+        self.assertRaises(ValueError, self.graph.get_node(0).set_dist,"asd")

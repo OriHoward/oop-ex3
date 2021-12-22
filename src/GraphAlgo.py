@@ -4,7 +4,6 @@ from typing import List
 
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
-from GraphEdge import GraphEdge
 from GraphInterface import GraphInterface
 from GraphNode import GraphNode
 from NodeTagEnum import NodeTag
@@ -17,7 +16,6 @@ from GraphJSONEncoder import GraphEncoder
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=None):
-        self.prev: dict[int, List] = {}
         if graph is None:
             self.graph: DiGraph = DiGraph()
         else:
@@ -72,7 +70,12 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        return 0, 0
+        if id1 == id2 or self.graph.get_nodeMap().get(id1) is None or self.graph.get_nodeMap().get(id2) is None:
+            return 'inf', None
+        prev = self.dijkstra(id1)
+        prev.get(id2).append(id2)
+        dest_node = self.graph.get_node(id2)
+        return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
         pass
@@ -80,8 +83,8 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
-    def reset_graph_vars(self, graph: DiGraph):
-        self.prev.clear()
+    @staticmethod
+    def reset_graph_vars(graph: DiGraph):
         for node in graph.get_nodeMap().values():
             node.set_tag(NodeTag.WHITE)
 
@@ -133,28 +136,28 @@ class GraphAlgo(GraphAlgoInterface):
         :return: A list of the nodes id's in the path, and the overall distance
         """
 
-    def dijkstra(self, src: int) -> dict[int, list[GraphNode]]:
-        prev: dict[int, list[GraphNode]] = {}
+    def dijkstra(self, src: int) -> dict[int, list[int]]:
+        prev: dict[int, list[int]] = {}
         curr_node = self.graph.get_node(src)
         curr_node.set_dist(0.0)
         to_scan = []
         for node in self.graph.get_nodeMap().values():
             if node.get_key() != src:
-                node.set_dist('inf')
+                node.set_dist(float('inf'))
                 prev[node.get_key()] = []
-            heapq.heappush(to_scan, (node.get_dist(), node))
+            heapq.heappush(to_scan, node)
 
         while len(to_scan) > 0:
-            _, node = heapq.heappop(to_scan)
+            node = heapq.heappop(to_scan)
             for curr_edge in self.graph.get_parsed_edges():
                 neighbor = self.graph.get_node(curr_edge.get_dest())
-                alt = node.get_dist + curr_edge.get_weight()
+                alt = node.get_dist() + curr_edge.get_weight()
                 if alt < neighbor.get_dist():
                     neighbor.set_dist(alt)
                     if prev.get(node.get_key, None) is not None:
                         prev[neighbor.get_key()] = copy.deepcopy(prev.get(node.get_key))
-                    prev.get(neighbor.get_key(),[]).append(node.get_key())
-                    heapq.heappush(to_scan, (neighbor.get_dist(), neighbor))
+                    prev.get(neighbor.get_key(), []).append(node.get_key())
+                    heapq.heappush(to_scan, neighbor)
         return prev
 
     def dijkstra_minimize(self, src: int):

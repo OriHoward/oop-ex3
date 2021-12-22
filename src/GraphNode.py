@@ -29,8 +29,11 @@ class GraphNode:
     def get_dist(self):
         return self._dist
 
-    def set_dist(self, dist):
-        self._dist = dist
+    def set_dist(self, dist: float):
+        if type(dist) == int or type(dist) == float:
+            self._dist = dist
+        else:
+            raise ValueError("Bad dist set")
 
     def get_key(self):
         return self._id
@@ -58,3 +61,6 @@ class GraphNode:
 
     def get_tag(self):
         return self._tag
+
+    def __lt__(self, other):
+        return self.get_dist() < other.get_dist()
