@@ -29,7 +29,19 @@ interface GraphInterface {
 }
 
 class GraphAlgo implements GraphAlgoInterface{
-
+ load_nodes(self, nodes) -> bool
+ load_edges(self, edges) -> bool
+ reset_graph_vars(graph: DiGraph)
+ is_connected(self)
+ is_connected_dfs(self)
+ dfs_traversal(graph_copy, curr_node, scanned_nodes)
+ remove_visited_cities(cities: set[int], curr_path: tuple[int])
+ get_optimal_path_to_cities(self, cities: set[int])
+ get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float)
+ get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float)
+ dijkstra(self, src: int) -> dict[int, list[int]]
+ dijkstra_minimize(self, src: int)
+ find_max(self) -> int
 }
 
 class DiGraph implements GraphInterface{
@@ -45,5 +57,7 @@ enum TimeUnit {
     GRAY = 1
     BLACK = 2
 }
+
+
 
 @enduml
