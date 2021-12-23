@@ -1,9 +1,16 @@
+import random
+
+
+def random_num():
+    return random.randint(0, 100)
+
+
 class Position:
 
-    def __init__(self, x=0, y=0, z=0):
-        self._x: float = float(x)
-        self._y: float = float(y)
-        self._z: float = float(z)
+    def __init__(self, x=None, y=None, z=None):
+        self._x = random_num() if x is None else float(x)
+        self._y = random_num() if y is None else float(y)
+        self._z = random_num() if z is None else float(z)
 
     def get_x(self):
         return self._x
@@ -18,3 +25,6 @@ class Position:
         if self._x == 0 and self._y == 0 and self._z == 0:
             return ""
         return f"{self._x},{self._y},{self._z}"
+
+    def __str__(self):
+        return "x={}, y={}, z={}".format(self._x, self._y, self._z)

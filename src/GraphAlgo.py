@@ -98,6 +98,7 @@ class GraphAlgo(GraphAlgoInterface):
             plt.annotate("", xy=(src_x, src_y), xytext=(dest_x, dest_y), arrowprops=dict(arrowstyle="<-"))
         plt.xlabel('x axis')
         plt.ylabel('y axis')
+        plt.tight_layout()
         plt.show()
 
     def get_graph(self) -> GraphInterface:
