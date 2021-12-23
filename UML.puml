@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface GraphAlgoInterface {
+
+ get_graph(self) -> GraphInterface
+ load_from_json(self, file_name: str) -> bool
+ save_to_json(self, file_name: str) -> bool
+ shortest_path(self, id1: int, id2: int) -> (float, list)
+ TSP(self, node_lst: List[int]) -> (List[int], float)
+ centerPoint(self) -> (int, float)
+ plot_graph(self) -> None
+
+}
+
+class GraphAlgo implements GraphAlgoInterface{
+
+}
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
+
+@enduml
