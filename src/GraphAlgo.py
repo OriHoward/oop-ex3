@@ -4,8 +4,7 @@ from typing import List
 
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
-from GraphGui import GraphGui
-from GraphEdge import GraphEdge
+import matplotlib.pyplot as plt
 from GraphNode import GraphNode
 from GraphInterface import GraphInterface
 from NodeTagEnum import NodeTag
@@ -82,7 +81,24 @@ class GraphAlgo(GraphAlgoInterface):
         return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
-        GraphGui(self.graph)
+        for curr_node in self.graph.get_nodeMap().values():
+            x = curr_node.get_pos().get_x()
+            y = curr_node.get_pos().get_y()
+            plt.plot(x, y, markersize=8, marker='.', color="red")
+            plt.text(x, y, curr_node.get_key(), color="black", fontsize=6, fontweight="bold")
+        for curr_edge in self.graph.get_parsed_edges():
+            node_key_src: int = curr_edge.get_src()
+            node_key_dest: int = curr_edge.get_dest()
+            node_src: GraphNode = self.graph.get_node(node_key_src)
+            node_dest: GraphNode = self.graph.get_node(node_key_dest)
+            src_x = node_src.get_pos().get_x()
+            src_y = node_src.get_pos().get_y()
+            dest_x = node_dest.get_pos().get_x()
+            dest_y = node_dest.get_pos().get_y()
+            plt.annotate("", xy=(src_x, src_y), xytext=(dest_x, dest_y), arrowprops=dict(arrowstyle="<-"))
+        plt.xlabel('x axis')
+        plt.ylabel('y axis')
+        plt.show()
 
     def get_graph(self) -> GraphInterface:
         return self.graph

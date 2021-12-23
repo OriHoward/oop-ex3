@@ -1,6 +1,7 @@
 from GraphEdge import GraphEdge
 from Position import Position
 from NodeTagEnum import NodeTag
+import random
 
 
 class GraphNode:
@@ -11,7 +12,7 @@ class GraphNode:
         if pos is not None:
             self._position = Position(*pos)
         else:
-            self._position = Position(0, 0, 0)
+            self._position = Position(random.randint(0, 100),random.randint(0,100),random.randint(0,100))
         self._id = _id
         self._dist: float = float('inf')
         self._tag = NodeTag.WHITE
