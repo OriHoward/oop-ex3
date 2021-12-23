@@ -13,7 +13,7 @@ class DiGraph(GraphInterface):
     def get_parsed_edges(self) -> list[GraphEdge]:
         return self._parsed_edges
 
-    def get_nodeMap(self) -> dict[int, GraphNode]:
+    def get_node_map(self) -> dict[int, GraphNode]:
         return self._nodeMap
 
     def get_node(self, key: int) -> GraphNode:

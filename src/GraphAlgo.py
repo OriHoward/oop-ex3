@@ -71,7 +71,7 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        if id1 == id2 or self.graph.get_nodeMap().get(id1) is None or self.graph.get_nodeMap().get(id2) is None:
+        if id1 == id2 or self.graph.get_node_map().get(id1) is None or self.graph.get_node_map().get(id2) is None:
             return 'inf', []
         prev = self.dijkstra(id1)
         prev.get(id2).append(id2)
@@ -81,7 +81,7 @@ class GraphAlgo(GraphAlgoInterface):
         return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
-        for curr_node in self.graph.get_nodeMap().values():
+        for curr_node in self.graph.get_node_map().values():
             x = curr_node.get_pos().get_x()
             y = curr_node.get_pos().get_y()
             plt.plot(x, y, markersize=8, marker='.', color="red")
@@ -105,7 +105,7 @@ class GraphAlgo(GraphAlgoInterface):
 
     @staticmethod
     def reset_graph_vars(graph: DiGraph):
-        for node in graph.get_nodeMap().values():
+        for node in graph.get_node_map().values():
             node.set_tag(NodeTag.WHITE)
 
     def is_connected(self):
@@ -116,16 +116,16 @@ class GraphAlgo(GraphAlgoInterface):
         if graph_copy is None:
             return False
         scanned_nodes = set()
-        first_node = graph_copy.get_nodeMap().get(0)
+        first_node = graph_copy.get_node_map().get(0)
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
-        if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
+        if len(scanned_nodes) != len(graph_copy.get_node_map()):
             return False
         # init for second dfs on reversed edges graph
         scanned_nodes.clear()
         self.reset_graph_vars(graph_copy)
         graph_copy.initiate_edge_maps()
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
-        if len(scanned_nodes) != len(graph_copy.get_nodeMap()):
+        if len(scanned_nodes) != len(graph_copy.get_node_map()):
             return False
         return True
 
@@ -220,7 +220,7 @@ class GraphAlgo(GraphAlgoInterface):
         curr_node = self.graph.get_node(src)
         curr_node.set_dist(0.0)
         to_scan = []
-        for node in self.graph.get_nodeMap().values():
+        for node in self.graph.get_node_map().values():
             if node.get_key() != src:
                 node.set_dist(float('inf'))
                 prev[node.get_key()] = []
@@ -243,7 +243,7 @@ class GraphAlgo(GraphAlgoInterface):
         curr_node = self.graph.get_node(src)
         curr_node.set_dist(0.0)
         to_scan = []
-        for node in self.graph.get_nodeMap().values():
+        for node in self.graph.get_node_map().values():
             if node.get_key() != src:
                 node.set_dist(float('inf'))
             heapq.heappush(to_scan, node)
@@ -261,7 +261,7 @@ class GraphAlgo(GraphAlgoInterface):
             return None
         curr_minMax = float('inf')
         chosen_node = 0
-        for curr_node_id in self.graph.get_nodeMap().keys():
+        for curr_node_id in self.graph.get_node_map().keys():
             self.dijkstra_minimize(curr_node_id)
             minMax_index = self.find_max()
             node = self.graph.get_node(minMax_index)
@@ -273,7 +273,7 @@ class GraphAlgo(GraphAlgoInterface):
     def find_max(self) -> int:
         maximum = float('-inf')
         max_index = 0
-        for curr_node in self.graph.get_nodeMap().values():
+        for curr_node in self.graph.get_node_map().values():
             if curr_node.get_dist() > maximum:
                 maximum = curr_node.get_dist()
                 max_index = curr_node.get_key()

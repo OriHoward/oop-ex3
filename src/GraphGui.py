@@ -20,10 +20,10 @@ class GraphGui:
         self.graph: DiGraph = graph
         self.radius = 5
         self.margin = 40
-        self.min_x = min(self.graph.get_nodeMap().values(), key=lambda node: node.get_pos().get_x()).get_pos().get_x()
-        self.max_x = max(self.graph.get_nodeMap().values(), key=lambda node: node.get_pos().get_x()).get_pos().get_x()
-        self.min_y = min(self.graph.get_nodeMap().values(), key=lambda node: node.get_pos().get_y()).get_pos().get_y()
-        self.max_y = max(self.graph.get_nodeMap().values(), key=lambda node: node.get_pos().get_y()).get_pos().get_y()
+        self.min_x = min(self.graph.get_node_map().values(), key=lambda node: node.get_pos().get_x()).get_pos().get_x()
+        self.max_x = max(self.graph.get_node_map().values(), key=lambda node: node.get_pos().get_x()).get_pos().get_x()
+        self.min_y = min(self.graph.get_node_map().values(), key=lambda node: node.get_pos().get_y()).get_pos().get_y()
+        self.max_y = max(self.graph.get_node_map().values(), key=lambda node: node.get_pos().get_y()).get_pos().get_y()
 
     """this function is taken from class material"""
 
@@ -45,7 +45,7 @@ class GraphGui:
 
             screen.fill(pygame.Color(179, 229, 252))
 
-            for curr_node in self.graph.get_nodeMap().values():
+            for curr_node in self.graph.get_node_map().values():
                 pos_x = self.scale_me(curr_node.get_pos().get_x(), x=True)
                 pos_y = self.scale_me(curr_node.get_pos().get_y(), y=True)
                 pygame.gfxdraw.aacircle(screen, pos_x, pos_y, self.radius, pygame.Color(81, 45, 168))
