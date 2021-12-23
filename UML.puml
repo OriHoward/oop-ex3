@@ -13,14 +13,51 @@ interface GraphAlgoInterface {
 
 }
 
-class GraphAlgo implements GraphAlgoInterface{
+interface GraphInterface {
 
+ v_size(self) -> int
+ e_size(self) -> int
+ get_all_v(self) -> dict
+ all_in_edges_of_node(self, id1: int) -> dict
+ all_out_edges_of_node(self, id1: int) -> dict
+ get_mc(self) -> int
+ add_edge(self, id1: int, id2: int, weight: float) -> bool
+ add_node(self, node_id: int, pos: tuple = None) -> bool
+ remove_node(self, node_id: int) -> bool
+ remove_edge(self, node_id1: int, node_id2: int) -> bool
+
+}
+
+class GraphAlgo implements GraphAlgoInterface{
+ load_nodes(self, nodes) -> bool
+ load_edges(self, edges) -> bool
+ reset_graph_vars(graph: DiGraph)
+ is_connected(self)
+ is_connected_dfs(self)
+ dfs_traversal(graph_copy, curr_node, scanned_nodes)
+ remove_visited_cities(cities: set[int], curr_path: tuple[int])
+ get_optimal_path_to_cities(self, cities: set[int])
+ get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float)
+ get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float)
+ dijkstra(self, src: int) -> dict[int, list[int]]
+ dijkstra_minimize(self, src: int)
+ find_max(self) -> int
+}
+
+class DiGraph implements GraphInterface{
+  get_parsed_edges(self) -> list[GraphEdge]
+  get_node_map(self) -> dict[int, GraphNode]
+  get_node(self, key: int) -> GraphNode
+  get_edge(self, src: int, dest: int)
+  initiate_edge_maps(self)
 }
 
 enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+    WHITE = 0
+    GRAY = 1
+    BLACK = 2
 }
+
+
 
 @enduml
