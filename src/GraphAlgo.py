@@ -106,22 +106,33 @@ class GraphAlgo(GraphAlgoInterface):
 
     @staticmethod
     def reset_graph_vars(graph: DiGraph):
+        """
+        Resets the tag used to mark if the nodes were visited.
+        """
         for node in graph.get_node_map().values():
             node.set_tag(NodeTag.WHITE)
 
     def is_connected(self):
+        """
+        Returns true if the graph is strongly connected (has a path from each node to every other node).
+        """
         return self.is_connected_dfs()
 
     def is_connected_dfs(self):
+        """
+        Function creates a deep copy of the graph, runs DFS traversal on the original graph and then again on the
+        transposed graph.
+        """
         graph_copy = copy.deepcopy(self.graph)  # deep copy of graph to prevent issues
         if graph_copy is None:
             return False
         scanned_nodes = set()
+        self.reset_graph_vars(graph_copy)
         first_node = graph_copy.get_node_map().get(0)
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
         if len(scanned_nodes) != len(graph_copy.get_node_map()):
             return False
-        # init for second dfs on reversed edges graph
+        # init for second dfs on transposed graph
         scanned_nodes.clear()
         self.reset_graph_vars(graph_copy)
         graph_copy.initiate_edge_maps()
@@ -132,6 +143,10 @@ class GraphAlgo(GraphAlgoInterface):
 
     @staticmethod
     def dfs_traversal(graph_copy, curr_node, scanned_nodes):
+        """
+        DFS is iterative since the recursive approach can cause a stack overflow error on large graphs.
+        The graph edges are transposed during the search.
+        """
         stack = deque()
         stack.append(curr_node)
         while len(stack) > 0:
@@ -143,7 +158,7 @@ class GraphAlgo(GraphAlgoInterface):
                 curr_node.set_tag(NodeTag.GRAY)
                 for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()).values():
                     stack.append(graph_copy.get_node(neighbor_edge.get_dest()))
-                    tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for next second dfs)
+                    tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for second dfs)
                     neighbor_edge.set_dest(neighbor_edge.get_src())
                     neighbor_edge.set_src(tmp)
             curr_node.set_tag(NodeTag.BLACK)
@@ -151,11 +166,14 @@ class GraphAlgo(GraphAlgoInterface):
             curr_node.set_destMap(dict())
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
+        """
+        Finds the shortest path that visits all the nodes in the list.
+        """
         if node_lst is None or len(node_lst) == 0:
             return None, -1
         if len(node_lst) == 1:
             return node_lst, 0
-        cities = set(node_lst)  # remove duplicates
+        cities = set(node_lst)  # set removes duplicates
         best_path, dist = self.get_optimal_path_to_cities(cities)
         self.remove_visited_cities(cities, best_path)
         path = list(best_path)
@@ -171,12 +189,18 @@ class GraphAlgo(GraphAlgoInterface):
 
     @staticmethod
     def remove_visited_cities(cities: set[int], curr_path: tuple[int]):
+        """
+        Removes nodes from the set that are in the given path.
+        """
         for key in curr_path:
             if key in cities:
                 cities.remove(key)
 
     # previous name: getOptimalPathFromList
     def get_optimal_path_to_cities(self, cities: set[int]):
+        """
+        Finds the shortest path between every pair of nodes.
+        """
         path_map: dict[tuple[int], float] = dict()
         for key1 in cities:
             for key2 in cities:
@@ -188,6 +212,9 @@ class GraphAlgo(GraphAlgoInterface):
 
     @staticmethod
     def get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float):
+        """
+        Returns the path that minimizes the the distance of the path containing the maximum number of unique nodes.
+        """
         max_size = 0
         best_path = None
         for path in path_map.keys():
@@ -205,6 +232,10 @@ class GraphAlgo(GraphAlgoInterface):
 
     # previous name: getOptimalPathFromLast
     def get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float):
+        """
+        Finds the shortest path from a given node to each node in the set. Returns the optimal path.
+        (For optimal path: see function get_optimal_path_from_map documentation).
+        """
         path_map: dict[tuple[int], float] = dict()
         for dest_key in cities:
             curr_dist, curr_shortest_path = self.shortest_path(src_key, dest_key)
