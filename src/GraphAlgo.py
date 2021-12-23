@@ -159,7 +159,7 @@ class GraphAlgo(GraphAlgoInterface):
         self.remove_visited_cities(cities, best_path)
         path = list(best_path)
         while len(cities) > 0:
-            curr_path, curr_dist = self.get_optimal_path_from_last(best_path[-1], cities)
+            curr_path, curr_dist = self.get_optimal_path_from_node(path[-1], cities)
             if curr_path is None:
                 break
             else:
@@ -202,14 +202,15 @@ class GraphAlgo(GraphAlgoInterface):
                 best_path = path
         return best_path, path_map.get(best_path)
 
-    def get_optimal_path_from_last(self, src_key: int, cities: set[int]) -> (tuple[int], float):
+    # previous name: getOptimalPathFromLast
+    def get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float):
         path_map: dict[tuple[int], float] = dict()
         for dest_key in cities:
             curr_dist, curr_shortest_path = self.shortest_path(src_key, dest_key)
             path_map[tuple(curr_shortest_path)] = curr_dist
         optimal_path, dist = self.get_optimal_path_from_map(cities, path_map)
         if optimal_path is None:
-            return None
+            return None, -1
         else:
             path = list(optimal_path)
             return tuple(path[1:]), dist
