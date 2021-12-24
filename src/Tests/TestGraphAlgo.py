@@ -52,8 +52,13 @@ class TestGraphAlgo(TestCase):
         self.assertEqual(actual_path, shortest_path)
 
     def test_center_point(self):
+        center, dist = self.g_algo.centerPoint()
+        self.assertEqual(-1, center)
+        self.assertEqual(dist, float('inf'))
+
         self.g_algo.load_from_json("../../data/centerTest.json")
-        self.assertEqual(2, self.g_algo.centerPoint())
+        center, dist = self.g_algo.centerPoint()
+        self.assertEqual(2, center)
 
     def test_find_max(self):
         self.assertTrue(True)

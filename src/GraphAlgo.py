@@ -72,7 +72,7 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if id1 == id2 or self.graph.get_node_map().get(id1) is None or self.graph.get_node_map().get(id2) is None:
-            return 'inf', []
+            return float('inf'), []
         prev = self.dijkstra(id1)
         prev.get(id2).append(id2)
         dest_node = self.graph.get_node(id2)
@@ -289,8 +289,8 @@ class GraphAlgo(GraphAlgoInterface):
                     heapq.heappush(to_scan, neighbor)
 
     def centerPoint(self) -> (int, float):
-        if not self.is_connected:
-            return None
+        if not self.is_connected():
+            return -1, float('inf')
         curr_minMax = float('inf')
         chosen_node = 0
         for curr_node_id in self.graph.get_node_map().keys():
@@ -300,7 +300,7 @@ class GraphAlgo(GraphAlgoInterface):
             if node.get_dist() < curr_minMax:
                 curr_minMax = node.get_dist()
                 chosen_node = curr_node_id
-        return chosen_node
+        return chosen_node, curr_minMax
 
     def find_max(self) -> int:
         maximum = float('-inf')
