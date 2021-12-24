@@ -85,7 +85,7 @@ class GraphAlgo(GraphAlgoInterface):
             x = curr_node.get_pos().get_x()
             y = curr_node.get_pos().get_y()
             plt.plot(x, y, markersize=8, marker='.', color="red")
-            plt.text(x, y, curr_node.get_key(), color="b", fontsize=8, fontweight="bold")
+            plt.text(x, y, curr_node.get_key(), color="b", fontsize=6, fontweight="bold")
         for curr_edge in self.graph.get_parsed_edges():
             node_key_src: int = curr_edge.get_src()
             node_key_dest: int = curr_edge.get_dest()
@@ -122,6 +122,7 @@ class GraphAlgo(GraphAlgoInterface):
         """
         Function creates a deep copy of the graph, runs DFS traversal on the original graph and then again on the
         transposed graph.
+        copy in Python (for deep copy): https://docs.python.org/3/library/copy.html
         """
         graph_copy = copy.deepcopy(self.graph)  # deep copy of graph to prevent issues
         if graph_copy is None:
@@ -146,6 +147,10 @@ class GraphAlgo(GraphAlgoInterface):
         """
         DFS is iterative since the recursive approach can cause a stack overflow error on large graphs.
         The graph edges are transposed during the search.
+
+        Some ways to implement a stack: list, deque
+        Why we used deque: append() and pop() time complexity is O(1) compared to O(n) with lists.
+        https://www.geeksforgeeks.org/stack-in-python/
         """
         stack = deque()
         stack.append(curr_node)
@@ -178,8 +183,8 @@ class GraphAlgo(GraphAlgoInterface):
         self.remove_visited_cities(cities, best_path)
         path = list(best_path)
         while len(cities) > 0:
-            path_from_end, dist_from_end = self.get_optimal_path_from_node(path[-1], cities, False)
-            path_from_start, dist_from_start = self.get_optimal_path_from_node(path[0], cities, True)
+            path_from_end, dist_from_end = self.get_optimal_path(path[-1], cities, False)
+            path_from_start, dist_from_start = self.get_optimal_path(path[0], cities, True)
             if path_from_start is None and path_from_end is None:
                 return list(), float('inf')
             elif len(path_from_start) < len(path_from_end):
@@ -200,6 +205,11 @@ class GraphAlgo(GraphAlgoInterface):
         for key in curr_path:
             if key in cities:
                 cities.remove(key)
+
+    # dictionary keys:
+    # lists are mutable which makes them unhashable so they can not be used as keys
+    # tuples are immutable so they can be used as keys
+    # further explanation: https://rollbar.com/blog/handling-unhashable-type-list-exceptions/
 
     # previous name: getOptimalPathFromList
     def get_optimal_path_to_cities(self, cities: set[int]):
@@ -236,8 +246,7 @@ class GraphAlgo(GraphAlgoInterface):
         return best_path, path_map.get(best_path)
 
     # previous name: getOptimalPathFromLast
-    def get_optimal_path_from_node(self, node_id: int, cities: set[int], is_start: bool) -> (tuple[int], float):
-        # src  = 2 -> 1, 1  ->  4 = dest
+    def get_optimal_path(self, node_id: int, cities: set[int], is_start: bool) -> (tuple[int], float):
         """
         Finds the shortest path from a given node to each node in the set. Returns the optimal path.
         (For optimal path: see function get_optimal_path_from_map documentation).
