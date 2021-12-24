@@ -46,7 +46,7 @@ class TestGraphAlgo(TestCase):
     def test_tsp(self):
         self.g_algo.load_from_json("../../data/A1.json")
         cities = [5, 2, 9]
-        actual_path = [2, 6, 5, 6, 7, 8, 9]
+        actual_path = [9, 8, 7, 6, 2, 6, 5]
         shortest_path, path_dist = self.g_algo.TSP(cities)
 
         self.assertEqual(actual_path, shortest_path)

@@ -85,7 +85,7 @@ class GraphAlgo(GraphAlgoInterface):
             x = curr_node.get_pos().get_x()
             y = curr_node.get_pos().get_y()
             plt.plot(x, y, markersize=8, marker='.', color="red")
-            plt.text(x, y, curr_node.get_key(), color="black", fontsize=6, fontweight="bold")
+            plt.text(x, y, curr_node.get_key(), color="b", fontsize=8, fontweight="bold")
         for curr_edge in self.graph.get_parsed_edges():
             node_key_src: int = curr_edge.get_src()
             node_key_dest: int = curr_edge.get_dest()
@@ -170,7 +170,7 @@ class GraphAlgo(GraphAlgoInterface):
         Finds the shortest path that visits all the nodes in the list.
         """
         if node_lst is None or len(node_lst) == 0:
-            return None, -1
+            return list(), float('inf')
         if len(node_lst) == 1:
             return node_lst, 0
         cities = set(node_lst)  # set removes duplicates
@@ -178,13 +178,18 @@ class GraphAlgo(GraphAlgoInterface):
         self.remove_visited_cities(cities, best_path)
         path = list(best_path)
         while len(cities) > 0:
-            curr_path, curr_dist = self.get_optimal_path_from_node(path[-1], cities)
-            if curr_path is None:
-                break
+            path_from_end, dist_from_end = self.get_optimal_path_from_node(path[-1], cities, False)
+            path_from_start, dist_from_start = self.get_optimal_path_from_node(path[0], cities, True)
+            if path_from_start is None and path_from_end is None:
+                return list(), float('inf')
+            elif len(path_from_start) < len(path_from_end):
+                path.extend(list(path_from_end))
+                dist += dist_from_end
+                self.remove_visited_cities(cities, path_from_end)
             else:
-                path.extend(list(curr_path))
-                dist += curr_dist
-            self.remove_visited_cities(cities, curr_path)
+                path = list(path_from_start) + path
+                dist += dist_from_start
+                self.remove_visited_cities(cities, path_from_start)
         return path, dist
 
     @staticmethod
@@ -211,12 +216,12 @@ class GraphAlgo(GraphAlgoInterface):
         return self.get_optimal_path_from_map(cities, path_map)
 
     @staticmethod
-    def get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float):
+    def get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (tuple[int], float):
         """
         Returns the path that minimizes the the distance of the path containing the maximum number of unique nodes.
         """
         max_size = 0
-        best_path = None
+        best_path = tuple()
         for path in path_map.keys():
             curr_participants: set[int] = set()
             for city in cities:
@@ -231,20 +236,26 @@ class GraphAlgo(GraphAlgoInterface):
         return best_path, path_map.get(best_path)
 
     # previous name: getOptimalPathFromLast
-    def get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float):
+    def get_optimal_path_from_node(self, node_id: int, cities: set[int], is_start: bool) -> (tuple[int], float):
+        # src  = 2 -> 1, 1  ->  4 = dest
         """
         Finds the shortest path from a given node to each node in the set. Returns the optimal path.
         (For optimal path: see function get_optimal_path_from_map documentation).
         """
         path_map: dict[tuple[int], float] = dict()
-        for dest_key in cities:
-            curr_dist, curr_shortest_path = self.shortest_path(src_key, dest_key)
+        for city in cities:
+            if is_start:
+                curr_dist, curr_shortest_path = self.shortest_path(city, node_id)
+            else:
+                curr_dist, curr_shortest_path = self.shortest_path(node_id, city)
             path_map[tuple(curr_shortest_path)] = curr_dist
         optimal_path, dist = self.get_optimal_path_from_map(cities, path_map)
         if optimal_path is None:
-            return None, -1
+            return tuple(), -1
         else:
             path = list(optimal_path)
+            if is_start:
+                return tuple(path[:-1]), dist
             return tuple(path[1:]), dist
 
     def dijkstra(self, src: int) -> dict[int, list[int]]:
