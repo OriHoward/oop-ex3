@@ -15,7 +15,7 @@ class TestDiGraph(TestCase):
 
     def test_get_parsed_edges(self):
         edge_list = self.graph.get_parsed_edges()
-        self.assertEqual(len(edge_list), 2)
+        self.assertEqual(3, len(edge_list))
         self.assertEqual(0, edge_list[0].get_src())
 
     def test_get_node_map(self):
@@ -45,12 +45,12 @@ class TestDiGraph(TestCase):
 
     def test_e_size(self):
         empty_graph = DiGraph()
-        self.assertEqual(2, self.graph.e_size())
+        self.assertEqual(3, self.graph.e_size())
         self.assertEqual(0, empty_graph.e_size())
 
     def test_get_mc(self):
         empty_graph = DiGraph()
-        self.assertEqual(6, self.graph.get_mc())
+        self.assertEqual(7, self.graph.get_mc())
         self.assertEqual(0, empty_graph.get_mc())
 
     def test_add_edge(self):
