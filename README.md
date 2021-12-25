@@ -55,6 +55,13 @@ This Enum is used when traversing through the graph (DFS) to tag the nodes that 
 
 
 ## Detailed execution details of the algorithms
+
+computer specs:
+* intel i7
+* ram - 16GB
+* windows 10
+
+
 ### Times in java:
 
 | Graph Size | isConnected | Center  |   TSP   | load     | save    |      shortestPath           |
@@ -78,3 +85,4 @@ This Enum is used when traversing through the graph (DFS) to tag the nodes that 
 | G1 (16)    |   4msec     |  11msec |   4ms   |   3ms  |  4ms |1msec (1 to 8)                   |
 | G2 (31)    |   4msec     |  9msec  |   7ms   |   5ms  |  2ms |2msec (5 to 13)                  |
 | G3 (48)    |   5msec     | 27msec  |   12ms  |   6ms  |  3ms |3msec (26 to 46)                 |
+
