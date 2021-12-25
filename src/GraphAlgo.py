@@ -128,7 +128,6 @@ class GraphAlgo(GraphAlgoInterface):
         if graph_copy is None:
             return False
         scanned_nodes = set()
-        self.reset_graph_vars(graph_copy)
         first_node = graph_copy.get_node_map().get(0)
         self.dfs_traversal(graph_copy, first_node, scanned_nodes)
         if len(scanned_nodes) != len(graph_copy.get_node_map()):
