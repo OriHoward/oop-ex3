@@ -106,8 +106,9 @@ class GraphAlgo(GraphAlgoInterface):
         for curr_node in self.graph.get_node_map().values():
             x = curr_node.get_pos().get_x()
             y = curr_node.get_pos().get_y()
-            plt.plot(x, y, markersize=8, marker='.', color="red")
-            plt.text(x, y, curr_node.get_key(), color="b", fontsize=10, fontweight="bold")
+            plt.plot(x, y, markersize=15, marker='.', color="red")
+            plt.text(x, y, curr_node.get_key(), color="b", fontsize=8, fontweight="bold", horizontalalignment='center',
+                     verticalalignment='center')
         for curr_edge in self.graph.get_parsed_edges():
             node_key_src: int = curr_edge.get_src()
             node_key_dest: int = curr_edge.get_dest()
