@@ -25,29 +25,35 @@ class GraphAlgo(GraphAlgoInterface):
     def load_nodes(self, nodes) -> bool:
         """
         This function is responsible for loading the nodes array from the given JSON file.
+        the counter it counting the amount of nodes that were parsed successfully
         """
+        added_node_counter = 0
         if nodes is None:
             return False
         for node in nodes:
             node_id = node.get("id")
             pos: tuple = tuple(node.get("pos", "").split(',')[:-1])
             is_added = self.graph.add_node(node_id, pos)
-            if not is_added:
-                return False
+            if is_added:
+                added_node_counter += 1
+        print(f"{added_node_counter} nodes loaded successfully")
         return True
 
     def load_edges(self, edges) -> bool:
         """
         This function is responsible for loading the edges array from the given JSON file.
         after the nodes are creates this function is then used to add the edges between the nodes.
+        the counter it counting the amount of edges that were parsed successfully
         """
+        added_edge_counter = 0
         if edges is None:
             return False
         for edge in edges:
 
             is_added = self.graph.add_edge(edge.get('src', None), edge.get('dest', None), edge.get('w', None))
-            if not is_added:
-                return False
+            if is_added:
+                added_edge_counter += 1
+        print(f"{added_edge_counter} edges loaded successfully")
         return True
 
     def load_from_json(self, file_name: str) -> bool:
