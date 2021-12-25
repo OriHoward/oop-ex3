@@ -78,3 +78,6 @@ class GraphNode:
 
     def __str__(self):
         return f"Node: ID={self._id}, pos=({self._position})"
+
+    def __repr__(self):
+        return f"{self._id}: |edges out| {len(self.get_destMap())} |edges in| {len(self.get_srcMap())}"

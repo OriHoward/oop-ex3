@@ -36,7 +36,6 @@ class GraphAlgo(GraphAlgoInterface):
             is_added = self.graph.add_node(node_id, pos)
             if is_added:
                 added_node_counter += 1
-        print(f"{added_node_counter} nodes loaded successfully")
         return True
 
     def load_edges(self, edges) -> bool:
@@ -53,7 +52,6 @@ class GraphAlgo(GraphAlgoInterface):
             is_added = self.graph.add_edge(edge.get('src', None), edge.get('dest', None), edge.get('w', None))
             if is_added:
                 added_edge_counter += 1
-        print(f"{added_edge_counter} edges loaded successfully")
         return True
 
     def load_from_json(self, file_name: str) -> bool:
