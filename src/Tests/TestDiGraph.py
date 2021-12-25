@@ -10,6 +10,7 @@ class TestDiGraph(TestCase):
         for n in range(4):
             self.graph.add_node(n)
         self.graph.add_edge(0, 1, 1)
+        self.graph.add_edge(0, 3, 7.7)
         self.graph.add_edge(1, 0, 1.1)
 
     def test_get_parsed_edges(self):
@@ -77,15 +78,13 @@ class TestDiGraph(TestCase):
         self.assertIsNotNone(test_g.get_node_map())
 
     def test_all_in_edges_of_node(self):
-        first_list = self.graph.all_in_edges_of_node(0)
-        second_list = self.graph.all_in_edges_of_node(3)
+        expected_dict = {1: 1.1}
+        result_dict = self.graph.all_in_edges_of_node(0)
 
-        self.assertEqual(1, len(first_list))
-        self.assertEqual(0, len(second_list))
+        self.assertEqual(expected_dict, result_dict)
 
     def test_all_out_edges_of_node(self):
-        first_list = self.graph.all_in_edges_of_node(0)
-        second_list = self.graph.all_in_edges_of_node(3)
+        expected_dict = {1: 1, 3: 7.7}
+        result_dict = self.graph.all_out_edges_of_node(0)
 
-        self.assertEqual(1, len(first_list))
-        self.assertEqual(0, len(second_list))
+        self.assertEqual(expected_dict, result_dict)
