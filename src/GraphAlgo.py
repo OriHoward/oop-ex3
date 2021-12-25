@@ -103,11 +103,12 @@ class GraphAlgo(GraphAlgoInterface):
         return dest_node.get_dist(), prev.get(id2)
 
     def plot_graph(self) -> None:
+        plt.style.use('seaborn')
         for curr_node in self.graph.get_node_map().values():
             x = curr_node.get_pos().get_x()
             y = curr_node.get_pos().get_y()
-            plt.plot(x, y, markersize=15, marker='.', color="red")
-            plt.text(x, y, curr_node.get_key(), color="b", fontsize=8, fontweight="bold", horizontalalignment='center',
+            plt.plot(x, y, markersize=12, marker='o', color="turquoise")
+            plt.text(x, y, curr_node.get_key(), color="black", fontsize=9, fontweight="bold", horizontalalignment='center',
                      verticalalignment='center')
         for curr_edge in self.graph.get_parsed_edges():
             node_key_src: int = curr_edge.get_src()
@@ -118,9 +119,11 @@ class GraphAlgo(GraphAlgoInterface):
             src_y = node_src.get_pos().get_y()
             dest_x = node_dest.get_pos().get_x()
             dest_y = node_dest.get_pos().get_y()
-            plt.annotate("", xy=(src_x, src_y), xytext=(dest_x, dest_y), arrowprops=dict(arrowstyle="<-"))
+            plt.annotate("", xy=(src_x, src_y), xytext=(dest_x, dest_y),
+                         arrowprops=dict(arrowstyle="<-", lw=1, alpha=0.7, color="navy"))
         plt.xlabel('x axis')
         plt.ylabel('y axis')
+        plt.grid(False)
         plt.tight_layout()
         plt.show()
 
