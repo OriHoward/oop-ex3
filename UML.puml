@@ -28,7 +28,7 @@ interface GraphInterface {
 
 }
 
-class GraphAlgo implements GraphAlgoInterface{
+class GraphAlgo implements GraphAlgoInterface {
  load_nodes(self, nodes) -> bool
  load_edges(self, edges) -> bool
  reset_graph_vars(graph: DiGraph)
@@ -37,14 +37,14 @@ class GraphAlgo implements GraphAlgoInterface{
  dfs_traversal(graph_copy, curr_node, scanned_nodes)
  remove_visited_cities(cities: set[int], curr_path: tuple[int])
  get_optimal_path_to_cities(self, cities: set[int])
- get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (List[int], float)
- get_optimal_path_from_node(self, src_key: int, cities: set[int]) -> (tuple[int], float)
+ get_optimal_path_from_map(cities: set[int], path_map: dict[tuple[int], float]) -> (tuple[int], float)
+ get_optimal_path(self, node_id: int, cities: set[int], is_start: bool) -> (tuple[int], float)
  dijkstra(self, src: int) -> dict[int, list[int]]
  dijkstra_minimize(self, src: int)
  find_max(self) -> int
 }
 
-class DiGraph implements GraphInterface{
+class DiGraph implements GraphInterface {
   get_parsed_edges(self) -> list[GraphEdge]
   get_node_map(self) -> dict[int, GraphNode]
   get_node(self, key: int) -> GraphNode
@@ -52,12 +52,52 @@ class DiGraph implements GraphInterface{
   initiate_edge_maps(self)
 }
 
-enum TimeUnit {
+class GraphEdge {
+  get_src(self)
+  get_dest(self)
+  get_weight(self)
+  set_dest(self, dest: int)
+  set_src(self, src: int)
+  to_json_dict(self)
+}
+
+class GraphNode {
+  get_srcMap(self)
+  get_destMap(self)
+  set_srcMap(self, src_map: dict)
+  set_destMap(self, dest_map: dict)
+  get_dist(self)
+  set_dist(self, dist: float)
+  get_key(self)
+  add_dest(self, edge: GraphEdge)
+  add_src(self, edge: GraphEdge)
+  remove_dest(self, dest: int) -> GraphEdge
+  remove_src(self, src: int) -> GraphEdge
+  to_json_dict(self)
+  get_pos(self) -> Position
+  set_tag(self, tag: NodeTag)
+  get_tag(self)
+}
+
+class Position {
+  get_x(self)
+  get_y(self)
+  get_z(self):
+  get_json_format_str(self)
+}
+
+class GraphEncoder {
+    default(self, o: Any) -> Any
+}
+
+enum NodeTag {
     WHITE = 0
     GRAY = 1
     BLACK = 2
 }
 
+Position o-- GraphNode
+DiGraph o-- GraphAlgo
 
 
 @enduml
