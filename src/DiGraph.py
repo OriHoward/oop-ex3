@@ -1,3 +1,5 @@
+import json
+
 from GraphInterface import GraphInterface
 from GraphNode import GraphNode
 from GraphEdge import GraphEdge
@@ -135,3 +137,10 @@ class DiGraph(GraphInterface):
             return dict()
         edges = {key: value.get_weight() for (key, value) in self.get_node(id1).get_destMap().items()}
         return edges
+
+    def __repr__(self):
+        to_print = []
+        for key, val in self._nodeMap.items():
+            to_print.append(f"{key}: {key}|edges out| {len(val.get_destMap())} |edges in| {len(val.get_srcMap())}")
+
+        return f"Graph: |V|={self.v_size()} , |E|={self.e_size()}\n{{{', '.join(to_print)}}}"
