@@ -49,7 +49,7 @@ class TestDiGraph(TestCase):
 
     def test_get_mc(self):
         empty_graph = DiGraph()
-        self.assertEqual(2, self.graph.get_mc())
+        self.assertEqual(6, self.graph.get_mc())
         self.assertEqual(0, empty_graph.get_mc())
 
     def test_add_edge(self):
