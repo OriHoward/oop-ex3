@@ -2,12 +2,18 @@ import random
 
 
 def random_num():
+    """
+    Generates a random number between [0, 100]
+    """
     return random.randint(0, 100)
 
 
 class Position:
 
     def __init__(self, x=None, y=None, z=None):
+        """
+        Generates a random number if there is a missing parameter in the constructor.
+        """
         self._x = random_num() if x is None else float(x)
         self._y = random_num() if y is None else float(y)
         self._z = random_num() if z is None else float(z)
@@ -22,8 +28,6 @@ class Position:
         return self._z
 
     def get_json_format_str(self):
-        if self._x == 0 and self._y == 0 and self._z == 0:
-            return ""
         return f"{self._x},{self._y},{self._z}"
 
     def __str__(self):
