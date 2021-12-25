@@ -184,7 +184,7 @@ class GraphAlgo(GraphAlgoInterface):
             scanned_nodes.add(curr_node.get_key())
             if curr_node.get_tag() == NodeTag.WHITE:
                 curr_node.set_tag(NodeTag.GRAY)
-                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()).values():
+                for neighbor_edge in graph_copy.get_node(curr_node.get_key()).get_destMap().values():
                     stack.append(graph_copy.get_node(neighbor_edge.get_dest()))
                     tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for second dfs)
                     neighbor_edge.set_dest(neighbor_edge.get_src())
