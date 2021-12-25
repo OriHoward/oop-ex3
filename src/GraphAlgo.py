@@ -23,29 +23,45 @@ class GraphAlgo(GraphAlgoInterface):
             self.graph: DiGraph = graph
 
     def load_nodes(self, nodes) -> bool:
+        """
+        This function is responsible for loading the nodes array from the given JSON file.
+        the counter it counting the amount of nodes that were parsed successfully
+        """
+        added_node_counter = 0
         if nodes is None:
             return False
         for node in nodes:
             node_id = node.get("id")
             pos: tuple = tuple(node.get("pos", "").split(',')[:-1])
             is_added = self.graph.add_node(node_id, pos)
-            if not is_added:
-                return False
+            if is_added:
+                added_node_counter += 1
+        print(f"{added_node_counter} nodes loaded successfully")
         return True
 
     def load_edges(self, edges) -> bool:
+        """
+        This function is responsible for loading the edges array from the given JSON file.
+        after the nodes are creates this function is then used to add the edges between the nodes.
+        the counter it counting the amount of edges that were parsed successfully
+        """
+        added_edge_counter = 0
         if edges is None:
             return False
         for edge in edges:
 
             is_added = self.graph.add_edge(edge.get('src', None), edge.get('dest', None), edge.get('w', None))
-            if not is_added:
-                return False
+            if is_added:
+                added_edge_counter += 1
+        print(f"{added_edge_counter} edges loaded successfully")
         return True
 
     def load_from_json(self, file_name: str) -> bool:
+        """
+        This function parses a given JSON file to a graph.
+        it returns True if the function has successfully loaded the graph and False otherwise.
+        """
         try:
-            json_dict = {}
             self.graph = DiGraph()
             with open(file_name, 'r') as f:
                 json_dict = json.load(f)
@@ -57,6 +73,10 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
+        """
+        This function is saving the current graph into a given file.
+        it uses a custom GraphEncoder which Encodes the graph to a json file
+        """
         try:
             to_json = {}
             node_list = list(self.graph.get_all_v().values())
@@ -71,6 +91,10 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
+        """
+        This function is calculating the distance between two given nodes in the graph using the dijkstra algorithm
+        if there is no path is return (inf,[])
+        """
         if id1 == id2 or self.graph.get_node_map().get(id1) is None or self.graph.get_node_map().get(id2) is None:
             return float('inf'), []
         prev = self.dijkstra(id1)
@@ -160,7 +184,7 @@ class GraphAlgo(GraphAlgoInterface):
             scanned_nodes.add(curr_node.get_key())
             if curr_node.get_tag() == NodeTag.WHITE:
                 curr_node.set_tag(NodeTag.GRAY)
-                for neighbor_edge in graph_copy.all_out_edges_of_node(curr_node.get_key()).values():
+                for neighbor_edge in graph_copy.get_node(curr_node.get_key()).get_destMap().values():
                     stack.append(graph_copy.get_node(neighbor_edge.get_dest()))
                     tmp = neighbor_edge.get_dest()  # transpose edges of the graph (for second dfs)
                     neighbor_edge.set_dest(neighbor_edge.get_src())
@@ -205,12 +229,12 @@ class GraphAlgo(GraphAlgoInterface):
             if key in cities:
                 cities.remove(key)
 
-    # dictionary keys:
-    # lists are mutable which makes them unhashable so they can not be used as keys
-    # tuples are immutable so they can be used as keys
-    # further explanation: https://rollbar.com/blog/handling-unhashable-type-list-exceptions/
+    """
+    lists are mutable which makes them unhashable so they can not be used as keys
+    tuples are immutable so they can be used as keys
+    further explanation: https://rollbar.com/blog/handling-unhashable-type-list-exceptions/
+    """
 
-    # previous name: getOptimalPathFromList
     def get_optimal_path_to_cities(self, cities: set[int]):
         """
         Finds the shortest path between every pair of nodes.
@@ -244,10 +268,11 @@ class GraphAlgo(GraphAlgoInterface):
                 best_path = path
         return best_path, path_map.get(best_path)
 
-    # previous name: getOptimalPathFromLast
     def get_optimal_path(self, node_id: int, cities: set[int], is_start: bool) -> (tuple[int], float):
         """
         Finds the shortest path from a given node to each node in the set. Returns the optimal path.
+        the parameter (is_start) is to decide whether the given node is the start of the path or the end of it,
+        this is used to check dijkstra
         (For optimal path: see function get_optimal_path_from_map documentation).
         """
         path_map: dict[tuple[int], float] = dict()
@@ -267,6 +292,10 @@ class GraphAlgo(GraphAlgoInterface):
             return tuple(path[1:]), dist
 
     def dijkstra(self, src: int) -> dict[int, list[int]]:
+        """
+        This version of the dijkstra algorithm also recreates the path from the src node to each node in the graph
+        https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+        """
         prev: dict[int, list[int]] = {}
         curr_node = self.graph.get_node(src)
         curr_node.set_dist(0.0)
@@ -291,6 +320,9 @@ class GraphAlgo(GraphAlgoInterface):
         return prev
 
     def dijkstra_minimize(self, src: int):
+        """
+        This version of the dijkstra function is not copying objects that is why is it faster than the version above
+        """
         curr_node = self.graph.get_node(src)
         curr_node.set_dist(0.0)
         to_scan = []
@@ -308,6 +340,9 @@ class GraphAlgo(GraphAlgoInterface):
                     heapq.heappush(to_scan, neighbor)
 
     def centerPoint(self) -> (int, float):
+        """
+        This function finds the center point in the graph using the dijkstra algorithm
+        """
         if not self.is_connected():
             return -1, float('inf')
         curr_minMax = float('inf')

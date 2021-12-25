@@ -1,7 +1,6 @@
 from GraphEdge import GraphEdge
 from Position import Position
 from NodeTagEnum import NodeTag
-import random
 
 
 class GraphNode:
@@ -12,7 +11,7 @@ class GraphNode:
         if pos is not None:
             self._position = Position(*pos)
         else:
-            self._position = Position(random.randint(0, 100),random.randint(0,100),random.randint(0,100))
+            self._position = Position()
         self._id = _id
         self._dist: float = float('inf')
         self._tag = NodeTag.WHITE
@@ -39,6 +38,7 @@ class GraphNode:
             raise ValueError("Bad dist set")
 
     def get_key(self):
+        """Returns node ID"""
         return self._id
 
     def add_dest(self, edge: GraphEdge):
@@ -62,13 +62,19 @@ class GraphNode:
     def get_pos(self) -> Position:
         return self._position
 
-    # todo: generate postion if there is no pos
-
     def set_tag(self, tag: NodeTag):
+        """Set if node was visited (used in DFS)"""
         self._tag = tag
 
     def get_tag(self):
+        """Returns the node tag"""
         return self._tag
 
     def __lt__(self, other):
+        """
+        less-than operator.
+        """
         return self.get_dist() < other.get_dist()
+
+    def __str__(self):
+        return f"Node: ID={self._id}, pos=({self._position})"
