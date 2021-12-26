@@ -118,3 +118,6 @@ This Enum is used when traversing through the graph (DFS) to tag the nodes that 
 | G2 (31)    |   4msec     |  9msec  |   7ms   |   5ms  |  2ms |2msec (5 to 13)                  |
 | G3 (48)    |   5msec     | 27msec  |   12ms  |   6ms  |  3ms |3msec (26 to 46)                 |
 
+## UML
+
+![](./misc/UML.png)
