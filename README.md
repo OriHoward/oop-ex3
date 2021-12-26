@@ -66,7 +66,7 @@ The following algorithms were the core of the project:
 ### DiGraph
 
 This is an implementation of the `GraphInterface`. The details about the design of this class are in
-the [idea of Implementation section](##ideaOfImplementation).
+the [Idea of Implementation section](#idea-of-implementation).
 
 ### GraphAlgo
 
