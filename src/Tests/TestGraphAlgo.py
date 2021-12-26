@@ -53,7 +53,7 @@ class TestGraphAlgo(TestCase):
 
     def test_center_point(self):
         center, dist = self.g_algo.centerPoint()
-        self.assertEqual(-1, center)
+        self.assertEqual(None, center)
         self.assertEqual(dist, float('inf'))
 
         self.g_algo.load_from_json("../../data/centerTest.json")
