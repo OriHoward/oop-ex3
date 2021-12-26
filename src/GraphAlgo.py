@@ -346,7 +346,7 @@ class GraphAlgo(GraphAlgoInterface):
         This function finds the center point in the graph using the dijkstra algorithm
         """
         if not self.is_connected():
-            return -1, float('inf')
+            return None, float('inf')
         curr_minMax = float('inf')
         chosen_node = 0
         for curr_node_id in self.graph.get_node_map().keys():
