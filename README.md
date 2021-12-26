@@ -1,18 +1,22 @@
 # oop-ex3
 
-## Running the code:
+## Running the Code
 
-make sure the `src` folder is set as the `Sources` folder
+If you are using an IDE- make sure the `src` directory is marked as the `Sources Root`.
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
-`python main.py`
+```
+python main.py
+```
 
 ## Contributors
 
-Eitan Kats , Adi Yafe, Ori Howard
+Eitan Kats, Adi Yafe, Ori Howard
 
-## Pictures of the graphs
+## Pictures of the Graphs
 
 ### check1-graph
 
@@ -22,12 +26,12 @@ Eitan Kats , Adi Yafe, Ori Howard
 
 ![](./misc/check2-graph.png)
 
-## Idea of implementation
+## Idea of Implementation
 
-we wanted to create a graph the meets all the requirements of the functions in the classes, and we can run algorithms
-efficiently on it
+We wanted to create a graph that meets all the requirements of the functions in the classes, and run algorithms
+efficiently on it.
 
-The way we chose to represent the graph is:
+How we chose to represent the graph:
 
 1. nodeMap - this is a hashmap which contains all the nodes of the graph, the key is the id of the node and the value is
    the node itself
@@ -36,7 +40,7 @@ The way we chose to represent the graph is:
 
 Each node comprises the following:
 
-1. pos - GeoLocation of the graph node
+1. pos - location of the graph node
 2. id - the id of the node
 3. weight - the weight of the node
 4. destMap - a hashmap that maps between the nodes that this node can reach and the edges that reach them
@@ -55,41 +59,41 @@ The following algorithms were the core of the project:
   algorithm: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 * DFS - When we check whether the graph is connected we use two iterations of DFS, the first one on the original graph
   which inverses the graph and a 2nd one on the inverse graph
-* plot_graph - to display the graph we used the `matplotlib` library
+* plot_graph - we used the `matplotlib` library to display the graph
 
 ## Class overview
 
 ### DiGraph
 
 This is an implementation of the `GraphInterface`. The details about the design of this class are in
-the [idea of Implementation section](##ideaOfImplementation)
+the [idea of Implementation section](##ideaOfImplementation).
 
 ### GraphAlgo
 
-This class is an implementation of the `GraphAlgoInterface` interface contains implementation of
-Dijkstra,dfs,tsp,plot_graph as they were described above.
+This class implements the `GraphAlgoInterface` interface. It contains the implementation of Dijkstra, dfs, tsp,
+plot_graph as described above.
 
 ### GraphEdge
 
-An object representing an edge in the graph
+An object representing an edge in the graph.
 
 ### GraphNode
 
-An object representing a node in the graph
+An object representing a node in the graph.
 
 ### Position
 
-An object representing the location of the node, this is used in the GUI to draw the nodes
+An object representing the location of the node, this is used in the GUI to draw the nodes.
 
 ### NodeTagEnum
 
-This Enum is used when traversing through the graph (DFS) to tag the nodes that are being traversed
+This Enum is used when traversing through the graph (DFS) to tag the nodes that are visited.
 
-## Detailed execution details of the algorithms
+## Detailed Execution Details of the Algorithms
 
 ![](./misc/pcSpecs.png "Computer specs")
 
-### Times in java:
+### Times in Java:
 
 | Graph Size | isConnected | Center  |   TSP   | load     | save    |      shortestPath           |
 |------------|-------------|---------|---------|----------|---------|-----------------------------|
@@ -101,7 +105,7 @@ This Enum is used when traversing through the graph (DFS) to tag the nodes that 
 | G2 (31)    |   84msec    |  90msec |   93ms  | 17ms     | 92ms    |91msec (5 to 13)             |
 | G3 (48)    |   93msec    | 101msec |   92ms  | 37ms     | 78ms    |91msec (26 to 46)            |
 
-### Times in python:
+### Times in Python:
 
 | Graph Size | isConnected | Center  |   TSP   | load   | save |             shortestPath        |
 |------------|-------------|---------|---------|------  |------|---------------------------------|
