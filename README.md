@@ -69,7 +69,7 @@ This Enum is used when traversing through the graph (DFS) to tag the nodes that 
 
 ## Detailed execution details of the algorithms
 
-![](/Users/eitankats/univ/oop-ex3/misc/pcSpecs.png "Computer specs")
+![](./misc/pcSpecs.png "Computer specs")
 
 ### Times in java:
 
