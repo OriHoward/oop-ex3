@@ -1,8 +1,26 @@
 # oop-ex3
 
+## Running the code:
+
+make sure the `src` folder is set as the `Sources` folder
+
+`pip install -r requirements.txt`
+
+`python main.py`
+
 ## Contributors
 
 Eitan Kats , Adi Yafe, Ori Howard
+
+## Pictures of the graphs
+
+### check1-graph
+
+![](./misc/check1-graph.png)
+
+### check2-graph
+
+![](./misc/check2-graph.png)
 
 ## Idea of implementation
 
