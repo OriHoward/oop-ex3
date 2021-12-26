@@ -98,6 +98,10 @@ enum NodeTag {
 
 Position o-- GraphNode
 DiGraph o-- GraphAlgo
+DiGraph o-- GraphEncoder
+DiGraph <|-- GraphEdge
+DiGraph <|-- GraphNode
+GraphAlgo o-- NodeTag
 
 
 @enduml

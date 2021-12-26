@@ -1,66 +1,75 @@
 # oop-ex3
+
+## Contributors
+
+Eitan Kats , Adi Yafe, Ori Howard
+
 ## Idea of implementation
 
-we wanted to create a graph the meets all the requirements of the functions in the classes,
-and we can run algorithms efficiently on it
+we wanted to create a graph the meets all the requirements of the functions in the classes, and we can run algorithms
+efficiently on it
 
 The way we chose to represent the graph is:
 
-1. nodeMap - this is a hashmap which contains all the nodes of the graph, the key is the id of the node and the value is the node itself
+1. nodeMap - this is a hashmap which contains all the nodes of the graph, the key is the id of the node and the value is
+   the node itself
 2. parsedEdges - this is a list of the edges that are in the graph
 3. MCount - this is the variable used to track the changes made to the graph
 
 Each node comprises the following:
+
 1. pos - GeoLocation of the graph node
 2. id - the id of the node
 3. weight - the weight of the node
-4. destMap - a hashmap that maps between the nodes that this node can reach and the edges that reach them 
+4. destMap - a hashmap that maps between the nodes that this node can reach and the edges that reach them
 5. sourceMap - a hashmap that maps between a node and the sources that can each is
 6. tag - This contains a tag from the Enum mainly used for coloring in the algorithms
 
 Each edge comprises the following:
+
 1. source - the id of the source node
 2. dest - the id of the dest node
 3. weight - the weight of the edge
 
 The following algorithms were the core of the project:
 
-* Dijkstra - We have implemented the Dijkstra algorithm with the minimum heap
-source of the Dijkstra algorithm: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-* DFS - When we check whether the graph is connected we use two iterations of DFS, the first one on the original graph which inverses the graph and a 2nd one on the inverse graph
+* Dijkstra - We have implemented the Dijkstra algorithm with the minimum heap source of the Dijkstra
+  algorithm: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+* DFS - When we check whether the graph is connected we use two iterations of DFS, the first one on the original graph
+  which inverses the graph and a 2nd one on the inverse graph
 * plot_graph - to display the graph we used the `matplotlib` library
 
 ## Class overview
 
 ### DiGraph
-This is an implementation of the `GraphInterface`.
-The details about the design of this class are in the [idea of Implementation section](##ideaOfImplementation)
 
+This is an implementation of the `GraphInterface`. The details about the design of this class are in
+the [idea of Implementation section](##ideaOfImplementation)
 
 ### GraphAlgo
-This class is an implementation of the `GraphAlgoInterface` interface
-contains implementation of Dijkstra,dfs,tsp,plot_graph as they were described above.
+
+This class is an implementation of the `GraphAlgoInterface` interface contains implementation of
+Dijkstra,dfs,tsp,plot_graph as they were described above.
 
 ### GraphEdge
+
 An object representing an edge in the graph
 
 ### GraphNode
+
 An object representing a node in the graph
 
 ### Position
+
 An object representing the location of the node, this is used in the GUI to draw the nodes
 
 ### NodeTagEnum
-This Enum is used when traversing through the graph (DFS) to tag the nodes that are being traversed
 
+This Enum is used when traversing through the graph (DFS) to tag the nodes that are being traversed
 
 ## Detailed execution details of the algorithms
 
-computer specs:
-* intel i7
-* ram - 16GB
-* windows 10
-
+![](/Users/eitankats/univ/oop-ex3/misc/pcSpecs.png "Computer specs")
 
 ### Times in java:
 
